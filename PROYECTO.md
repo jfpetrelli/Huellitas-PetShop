@@ -1,4 +1,4 @@
-# NOMBRE_DEL_PROYECTO
+# Huellitas PetShop
 
 Este es un archivo que debe completarse con los datos utilizados en el TPI. Este archivo puede modificarse en el tiempo, no obstante siempre debe mantenerse en un estado consistente con el desarrollo.
 
@@ -6,11 +6,11 @@ Este es un archivo que debe completarse con los datos utilizados en el TPI. Este
 
 ## Descripción del proyecto
 
-Definir cúal es el alcance de este proyecto y los principales objetivos que debe cumplir.
+Desarrollaremos un sistema web de inventarios automatizado para un petshop.
 
 ## Modelo de Dominio
 
-Insertar el modelo de dominio aquí.
+![Modelo de Dominio](/documentacion/Modelodedominio.png)
 
 ## Bosquejo de Arquitectura
 
