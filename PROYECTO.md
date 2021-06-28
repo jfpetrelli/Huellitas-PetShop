@@ -1,9 +1,5 @@
 # Huellitas PetShop
 
-Este es un archivo que debe completarse con los datos utilizados en el TPI. Este archivo puede modificarse en el tiempo, no obstante siempre debe mantenerse en un estado consistente con el desarrollo.
-
-**Importante:** Este archivo debe mantenerse en formato Markdown (.md) y sólo se tendrá en cuenta la versión disponible en GIT.
-
 ## Descripción del proyecto
 
 Desarrollaremos un sistema web de inventarios automatizado para un petshop.
@@ -14,19 +10,46 @@ Desarrollaremos un sistema web de inventarios automatizado para un petshop.
 
 ## Bosquejo de Arquitectura
 
-Definir la arquitectura del sistema y como interactuan sus diferentes componentes. Utilizar el Paquete **Office** de Draw.io o similar. [Ejemplo Online]().
+### Maqueta 1
+![Modelo de Dominio](/documentacion/maqueta1.png)
+
+### Maqueta 2
+![Modelo de Dominio](/documentacion/maqueta2.png)
+
+### Maqueta 3
+![Modelo de Dominio](/documentacion/maqueta3.png)
 
 ## Requerimientos
 
-Definir los requerimientos del sistema.
-
 ### Funcionales
 
-Listado y descripción breve de los requerimientos funcionales.
++ Ingresar al sistema con un login y contraseña.
++ Ingresar, modificar y eliminar un artículo.
++ Ingresar, modificar y eliminar un proveedor.
++ Alta y baja de stock con archivos.
++ Generar configuración de las diferentes listas de los proveedores.
++ Generar informes de movimientos de mercadería.
++ Informar antigüedad de artículos en inventario.
++ Registrar motivo de baja de sock.
++ Relacionar artículos de los diferentes proveedores con artículos propios.
 
 ### No Funcionales
 
-Listado y descripción breve de los requerimientos no funcionales. Utilizar las categorias dadas:
++ Mantenibilidad
+    + El sistema deberá estar estructurado con un modelo de 3 capas.
++ Seguridad
+    + El sistema trabajará de forma local.
+    + El sistema deberá realizar de forma diaria backups de los datos.
++ Usabilidad
+    + El sistema podrá trabajar desde cualquier dispositivo que esté conectado en la red local.
++ Disponibilidad
+    + El sistema será capaz de registrar al mismo momento alta y baja de stock.
+
+
+
+## Reglas de Negocio
+
+
 
 ### Portability
 
@@ -75,16 +98,22 @@ Listado y descripción breve de los requerimientos no funcionales. Utilizar las 
 
 ## Stack Tecnológico
 
-Definir que tecnologías se van a utilizar en cada capa y una breve descripción sobre por qué se escogió esa tecnologia.
+  + Python 3.8
+  + Django 3.2 
 
 ### Capa de Datos
 
-Definir que base de datos, ORM y tecnologías se utilizaron y por qué.
++ SQLITE3
++ ORM : Django
 
 ### Capa de Negocio
 
-Definir que librerías e integraciones con terceros se utilizaron y por qué. En caso de consumir APIs, definir cúales se usaron.
++ Pandas/Numpy - manejo de datos y carga de archivos.
++ Smptlib - envios de mails.
++ Matplotlib - generar graficos.
++ Otros.
 
 ### Capa de Presentación
 
-Definir que framework se utilizó y por qué.
++ HTML
++ Bootstrap
