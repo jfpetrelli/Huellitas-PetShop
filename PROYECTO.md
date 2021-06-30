@@ -49,7 +49,14 @@ Desarrollaremos un sistema web de inventarios automatizado para un petshop.
 
 ## Reglas de Negocio
 
-
++ Los artículos de tipo alimento tienen 3 meses de almacenamiento, luego pasan a estado de oferta.
++ Todos los lunes se emitirá un informe con los artículos próximos a vencer.
++ Todos los artículos que se ofrecen a la venta deben estar previamente cargados, si se ofrece un artículo de la lísta de proveedor que no está cargado, se deberá realizar el alta y luego se podrá generar la venta.
++ Los artículos deben pertenecer a un tipo.
++  Cada lista de proveedor tiene una única configuración de lectura, esta configuración solamente podrá ser modificada por el administrador.
++ En el alta de stock, el artículo tiene que estar previamente cargado.
++ Cuando un típo de artículo llega al stock mínimo, se disparará un mail al administrador informando la situación.
+ 
 
 ### Portability
 
