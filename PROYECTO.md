@@ -11,13 +11,13 @@ Desarrollaremos un sistema web de inventarios automatizado para un petshop.
 ## Bosquejo de Arquitectura
 
 ### Maqueta 1
-![Modelo de Dominio](/documentacion/maqueta1.png)
+![Maqueta 1](/documentacion/maqueta1.png)
 
 ### Maqueta 2
-![Modelo de Dominio](/documentacion/maqueta2.png)
+![Maqueta 2](/documentacion/maqueta2.png)
 
 ### Maqueta 3
-![Modelo de Dominio](/documentacion/maqueta3.png)
+![Maqueta 3](/documentacion/maqueta3.png)
 
 ## Requerimientos
 
@@ -55,8 +55,14 @@ Desarrollaremos un sistema web de inventarios automatizado para un petshop.
 + Los artículos deben pertenecer a un tipo.
 +  Cada lista de proveedor tiene una única configuración de lectura, esta configuración solamente podrá ser modificada por el administrador.
 + En el alta de stock, el artículo tiene que estar previamente cargado.
-+ Cuando un típo de artículo llega al stock mínimo, se disparará un mail al administrador informando la situación.
- 
++ Cuando un artículo llega al stock mínimo, se actualiza el estado a faltante.
++ Todos los jueves se confecciona las ordenes de compra. Se le asignan los artículos cuyo estado es faltante al proveedor con el menor costo. 
+
+## Caso de Uso
+
+### Importacion de lista de proveedor
+
+![Caso de uso importacion lista](/documentacion/cu-importararchivo.png)
 
 ### Portability
 
