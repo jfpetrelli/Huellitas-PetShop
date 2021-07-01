@@ -36,14 +36,14 @@ Desarrollaremos un sistema web de inventarios automatizado para un petshop.
 ### No Funcionales
 
 + Mantenibilidad
-    + El sistema deberá estar estructurado con un modelo de 3 capas.
+    + Estar estructurado con un modelo de 3 capas.
 + Seguridad
-    + El sistema trabajará de forma local.
-    + El sistema deberá realizar de forma diaria backups de los datos.
+    + Trabajar de forma local.
+    + Realizar de forma diaria backups de los datos.
 + Usabilidad
-    + El sistema podrá trabajar desde cualquier dispositivo que esté conectado en la red local.
+    + Trabajar desde cualquier dispositivo que esté conectado en la red local.
 + Disponibilidad
-    + El sistema será capaz de registrar al mismo momento alta y baja de stock.
+    + Registrar al mismo momento alta y baja de stock.
 
 
 
