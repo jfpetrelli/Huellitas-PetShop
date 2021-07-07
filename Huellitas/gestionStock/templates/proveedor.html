@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<style>
+
+.form-control{
+  border: 1px;
+ border-color: gray;
+ border-style: solid;
+
+}
+.form-control:focus {
+  border: 2px;
+  border-color: green;
+  border-style: solid;
+   
+}
+.form-control::placeholder {
+  color: grey;
+
+}
+
+</style>
+
+
+<div class="container-lg">
+  <div class="table-title">
+      <div class="row">
+          <div class="col-sm-9"><h2><b>Nuevo Proveedor</b></h2></div>
+      </div>
+  </div>
+</div>     
+	<form method="POST">
+    {% csrf_token %}
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="razon_social">{{ form.razon_social.label }}</label>
+            {{ form.razon_social }}
+          </div>
+          <div class="form-group col-md-6">
+            <label for="cuit">{{ form.cuit.label }}</label>
+            {{ form.cuit }}
+          </div>
+        </div>
+        <div class ="form-row">
+        <div class="form-group col-md-6">
+          <label for="telefono">{{ form.telefono.label }}</label>
+          {{ form.telefono }}
+        </div>
+          <div class="form-group col-md-6">
+            <label for="razon_social">{{ form.email.label }}</label>
+            {{ form.email }}
+          </div>
+        </div>
+
+        <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="direccion">{{ form.direccion.label }}</label>
+          {{ form.direccion }}
+        </div>
+       
+          <div class="form-group col-md-6">
+            <label for="localidad">{{ form.localidad.label }}</label>
+            {{ form.localidad }}
+          </div>
+  
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{% url 'proveedor_list' %}"><button type="reset" class="btn btn-success">Volver</button></a>
+  </form>
+
+
+
+{% endblock %}

@@ -26,6 +26,9 @@ class Localidades(models.Model):
     class Meta:
         verbose_name_plural = "Localidades"
 
+    def __str__(self):
+        return self.nombre
+
 class Marcas(models.Model):
 
     detalle = models.TextField(max_length = 30)
@@ -85,7 +88,7 @@ class Proveedores(models.Model):
     cuit = models.TextField(max_length = 30)
     direccion = models.TextField(max_length = 30)
     telefono = models.TextField(max_length = 30)
-    mail = models.EmailField()
+    email = models.EmailField()
     localidad = models.ForeignKey(Localidades, on_delete = models.CASCADE)
    
     class Meta:

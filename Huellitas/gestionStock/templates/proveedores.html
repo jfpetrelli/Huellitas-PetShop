@@ -1,12 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-     Proveedores
-</body>
-</html>
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="container-lg">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-9"><h2><b>Proveedores</b></h2></div>
+                    <div class="col-sm-3">
+                       <a href="{% url 'proveedor_create' %}"><button type="button" class="btn btn-success add-new"><i class="fa fa-plus"></i> Nuevo Proveedor</button></a>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped  mt-1">
+                <thead>
+                    <tr>
+                        <th class="align-middle">ID</th>
+                        <th class="align-middle">Razon Social</th>
+                        <th class="align-middle">CUIT</th>
+                        <th class="align-middle">Direccion</th>
+                        <th class="align-middle">Telefono</th>
+                        <th class="align-middle">Email</th>
+                        <th class="align-middle">Localidad</th>
+                        <th class="align-middle">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proveedor in proveedores %}
+                    <tr>
+                        <td class="align-middle">{{proveedor.id}}</td>
+                        <td class="align-middle">{{proveedor.razon_social}}</td>
+                        <td class="align-middle">{{proveedor.cuit}}</td>
+                        <td class="align-middle">{{proveedor.direccion}}</td>
+                        <td class="align-middle">{{proveedor.telefono}}</td>
+                        <td class="align-middle">{{proveedor.email}}</td>
+                        <td class="align-middle">{{proveedor.localidad}}</td>
+                        <td class="align-middle">
+                            <a href="{% url 'proveedor_update' proveedor.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-pencil fa-xs" aria-hidden="true"></i></button></a>
+                            <a href="{% url 'proveedor_delete' proveedor.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-trash fa-xs" aria-hidden="true"></i></button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+</div>     
+
+
+
+{% endblock %}

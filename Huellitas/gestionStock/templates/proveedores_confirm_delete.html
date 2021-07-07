@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    <h3>Desea eliminar el registro {{ object.razon_social }}? </h3>
+    <button type="button" type="submit" class="btn btn-success add-new btn-xs">Eliminar</button>
+    <a href="{% 'url proveedor_delete' %}"><button type="button" class="btn btn-success add-new btn-xs">Cancelar</button></a>
+</form>
+
+
+{% endblock %}
