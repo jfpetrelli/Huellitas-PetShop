@@ -10,5 +10,5 @@ urlpatterns = [
     path('home/', views.Home.as_view(), name="home"),
     path('proveedores/proveedor', views.ProveedoresCreate.as_view(), name="proveedor_create"),
     path('proveedores/proveedor/<int:pk>', views.ProveedoresUpdate.as_view(), name="proveedor_update"),
-    path('proveedores/<int:pk>', views.ProveedoresDelete.as_view(), name="proveedor_delete"),
+    path('proveedores/proveedores_confirm_delete/<int:pk>', views.ProveedoresDelete.as_view(), name="proveedor_delete"),
 ]

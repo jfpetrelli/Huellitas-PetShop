@@ -8,7 +8,6 @@ from gestionStock.forms import ProveedoresForm
 class Home(TemplateView):
     template_name = "home.html"
 
-
 class ProveedoresList(ListView):
     model = Proveedores
     queryset = model.objects.all()
@@ -29,7 +28,7 @@ class ProveedoresCreate(CreateView):
 
 class ProveedoresDelete(DeleteView):
     model = Proveedores
-    template_name = 'proveedores_confirm_delete.html'
+    template_name = "proveedores_confirm_delete.html"
     success_url = reverse_lazy('proveedor_list')
 
 
