@@ -3,7 +3,13 @@ from django.views.generic import ListView, CreateView, TemplateView, UpdateView,
 from django.urls import reverse_lazy
 from gestionStock.models import Proveedores, Localidades
 from gestionStock.forms import ProveedoresForm
+from django.contrib.auth.views import LoginView, LogoutView
 
+class Login(LoginView):
+    template_name = 'login.html'
+
+class Logout(LogoutView):
+    template_name = 'login.html'
 
 class Home(TemplateView):
     template_name = "home.html"

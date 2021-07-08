@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,7 +53,8 @@
     <div class="container">
         <div class="row text-center login-page">
 	   <div class="col-md-12 login-form">
-	      <form action="claseDestino.php" method="post"> 			
+	      <form method="post"> 		
+            {% csrf_token %}	
 	         <div class="row">
 		    <div class="col-md-12 login-form-header">
 		       <p class="login-form-font-header">Huellitas<span class="text-success">PetShop</span><p>
@@ -60,18 +62,17 @@
 		</div>
 		<div class="row">
 		   <div class="col-md-12 login-from-row">
-		      <input name="usuario" type="text" placeholder="Usuario" required/>
+		      {{ form.username }}
 		   </div>
 		</div>
 		<div class="row">
 		   <div class="col-md-12 login-from-row">
-		      <input name="password" type="password" placeholder="Contraseña" required/>
+		      {{ form.password }}
 		   </div>
 		</div>
 		<div class="row">
 		   <div class="col-md-12 login-from-row">
-		      <button class="btn btn btn-success">Entrar</button>
-		   </div>
+		      <button type="submit" class="btn btn btn-success">Entrar</button>
 		</div>
 	    </form>
 	</div>
