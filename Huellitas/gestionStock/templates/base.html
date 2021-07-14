@@ -19,7 +19,7 @@
 
 		<div class="wrapper d-flex align-items-stretch">
 		
-			<nav id="sidebar" class="active bg-success pb-5 position-fixed">
+			<nav id="sidebar" class="active bg-success pb-5 position-fixed" style="height: 100%;">
 				<div class="custom-menu">
 					<button type="button" id="sidebarCollapse" class="btn btn-success active border-white" onclick="devolver()">
 	          			<i class="fa fa-bars border-white"></i>
@@ -41,10 +41,10 @@
 	          		<li class="{% if request.path == '/configuracion/' %} active {% endif %}">
               			<a href="{% url 'Configuracion' %}"><span class="fa fa-cogs mr-3"></span> Configuracion</a>
 	          		</li>
-              		<li id="cerrar_sesion">
+					  <li>
 						<a href="{% url 'logout' %}"><span class="fa fa-sign-out mr-3 align-items-end"></span> Cerrar Sesion</a>	
 					</li>
-	        	</ul>
+				</ul>
 				</div>
     		</nav>
 		

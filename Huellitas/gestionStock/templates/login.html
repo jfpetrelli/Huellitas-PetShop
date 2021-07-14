@@ -54,7 +54,11 @@
         <div class="row text-center login-page">
 	   <div class="col-md-12 login-form">
 	      <form method="post"> 		
-            {% csrf_token %}	
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% if form.errors %}
+            <p>El nombre de usuario y/o contraseña no coinciden. Intentelo denuevo.</p>
+          {% endif %}
 	         <div class="row">
 		    <div class="col-md-12 login-form-header">
 		       <p class="login-form-font-header">Huellitas<span class="text-success">PetShop</span><p>
@@ -78,8 +82,6 @@
 	</div>
      </div>
   </div>
-
-
 
   <script src="../static/js/jquery.min.js"></script>
   <script src="../static/js/popper.js"></script>

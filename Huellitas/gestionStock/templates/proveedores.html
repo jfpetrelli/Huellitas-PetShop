@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 
+{% load static %}
 
 {% block content %}
+
+<style>
+
+    .form-control{
+      border: 1px;
+     border-color: gray;
+     border-style: solid;
+    
+    }
+    .form-control:focus {
+      border: 2px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control::placeholder {
+      color: grey;
+    
+    }
+    
+    </style>
 
 <div class="container-lg">
             <div class="table-title">
@@ -12,6 +34,18 @@
                     </div>
                 </div>
             </div>
+            <form method="GET">
+                <div class="input-group">
+                    <div class="form-row col-md-5">
+                      <input id="search-focus col-sm-9" type="search" id="form" class="form-control" name="buscar" />
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+            </form>
+            <div class="form-row">
+               
             <table class="table table-striped  mt-1">
                 <thead>
                     <tr>
@@ -43,8 +77,16 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                  <li class="page-item"><a class="page-link text-success" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+                  {% endif %}
+                  {% if page_obj.has_next %}
+                  <li class="page-item"><a class="page-link text-success" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                  {% endif %}
+                </ul>
+ 
 </div>     
-
-
 
 {% endblock %}

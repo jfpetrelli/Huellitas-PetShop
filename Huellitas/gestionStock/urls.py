@@ -5,7 +5,7 @@ from gestionStock import views
 
 urlpatterns = [
     path('', views.Login.as_view(), name="login"),
-    path('', views.Logout.as_view(), name="logout"),
+    path('logout/', views.Logout.as_view(), name="logout"),
     path('almacenes/',views.almacenes, name="Almacenes"),
     path('proveedores/', login_required(views.ProveedoresList.as_view()), name="proveedor_list"),
     path('resumen/',views.resumen, name="Resumen"),
