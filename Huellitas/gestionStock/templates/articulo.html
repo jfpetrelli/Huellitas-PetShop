@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<style>
+
+.form-control{
+  border: 1px;
+ border-color: gray;
+ border-style: solid;
+
+}
+.form-control:focus {
+  border: 2px;
+  border-color: green;
+  border-style: solid;
+   
+}
+.form-control::placeholder {
+  color: grey;
+
+}
+
+</style>
+
+
+<div class="container-lg">
+  <div class="table-title">
+      <div class="row">
+          <div class="col-sm-9"><h2><b>Nuevo Articulo</b></h2></div>
+      </div>
+  </div>
+</div>     
+	<form method="POST">
+    {% csrf_token %}
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="descripcion">{{ form.descripcion.label }}</label>
+            {{ form.descripcion }}
+          </div>
+          <div class="form-group col-md-6">
+            <label for="marca">{{ form.marca.label }}</label>
+            {{ form.marca }}
+          </div>
+        </div>
+        <div class ="form-row">
+        <div class="form-group col-md-6">
+          <label for="tipo">{{ form.tipo.label }}</label>
+          {{ form.tipo }}
+        </div>
+          <div class="form-group col-md-6">
+            <label for="stok">{{ form.stock.label }}</label>
+            {{ form.stock }}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{% url 'articulo_list' %}" class="btn btn-success">Cancelar</a>
+  </form>
+
+
+
+{% endblock %}

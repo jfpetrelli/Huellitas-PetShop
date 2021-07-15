@@ -37,6 +37,9 @@ class Marcas(models.Model):
 
     class Meta:
         verbose_name_plural = "Marcas"
+    
+    def __str__(self):
+        return self.detalle
 
 class Tipos(models.Model):
 
@@ -47,6 +50,9 @@ class Tipos(models.Model):
 
     class Meta:
         verbose_name_plural = "Tipos"
+
+    def __str__(self):
+        return self.detalle
 
 class Tipos_Salidas(models.Model):
 

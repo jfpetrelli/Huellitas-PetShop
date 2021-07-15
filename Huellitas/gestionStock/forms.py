@@ -1,5 +1,5 @@
 from django import forms
-from gestionStock.models import Proveedores
+from gestionStock.models import Proveedores, Articulos
 
 class ProveedoresForm(forms.ModelForm):
 
@@ -32,4 +32,30 @@ class ProveedoresForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class':'form-control'}),
             'localidad': forms.Select(attrs={'class':'form-control'}),
 
+        }
+
+class ArticulosForm(forms.ModelForm):
+
+    class Meta:
+        model = Articulos
+
+        fields = [
+            'descripcion',
+            'stock',
+            'marca',
+            'tipo',
+        ]
+
+        labels = {
+            'descripcion': 'Articulo',
+            'stock': 'Stock',
+            'marca': 'Marca',
+            'tipo': 'Tipo',
+        }
+
+        widgets = {
+            'descripcion': forms.TextInput(attrs={'class':'form-control'}),
+            'stock': forms.NumberInput(attrs={'class':'form-control'}),
+            'marca': forms.Select(attrs={'class':'form-control'}),
+            'tipo': forms.Select(attrs={'class':'form-control'}),
         }

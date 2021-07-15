@@ -2,10 +2,11 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
-from gestionStock.models import Proveedores, Localidades
-from gestionStock.forms import ProveedoresForm
+from gestionStock.models import Proveedores, Localidades, Articulos
+from gestionStock.forms import ProveedoresForm, ArticulosForm
 from django.contrib.auth.views import LoginView, LogoutView
 
+#LOGIN-LOGOUT
 class Login(LoginView):
     template_name = 'login.html'
 
@@ -21,9 +22,12 @@ class Logout(LogoutView):
         print(request.user)
         return super().dispatch(request, *args, **kwargs)
 
+#HOME
 class Home(TemplateView):
     template_name = "home.html"
 
+
+#PROVEEDORES
 class ProveedoresList(ListView):
     model = Proveedores
     queryset = model.objects.all()
@@ -59,11 +63,40 @@ class ProveedoresDelete(DeleteView):
     success_url = reverse_lazy('proveedor_list')
 
 
+##ALMACENES
+class ArticulosList(ListView):
+    model = Articulos
+    queryset = model.objects.all()
+    context_object_name = "articulos"
+    template_name = "almacen.html"
+    paginate_by = 5
 
+    def get_queryset(self): # new
+        query = self.request.GET.get('buscar')
+        if query:
+            object_list = Articulos.objects.filter(
+                Q(descripcion__icontains  =query))
+        else:
+            object_list = Articulos.objects.all()
+        return object_list
 
-def almacenes(request):
+class ArticuloUpdate(UpdateView):
+    model = Articulos
+    template_name = "articulo.html"
+    form_class = ArticulosForm
+    success_url = reverse_lazy('articulo_list')
 
-    return render(request,"almacen.html")
+class ArticuloCreate(CreateView):
+    model = Articulos
+    form_class = ArticulosForm
+    template_name = "articulo.html"
+    success_url = reverse_lazy('articulo_list')
+
+class ArticuloDelete(DeleteView):
+    model = Articulos
+    template_name = "articulo_confirm_delete.html"
+    success_url = reverse_lazy('articulo_list')
+
 
 def resumen(request):
 
