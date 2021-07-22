@@ -20,7 +20,7 @@ urlpatterns = [
     
 
     path('resumen/',views.resumen, name="Resumen"),
-    path('configuracion/',views.configuracion, name="Configuracion"),
+    path('configuracion/',views.configuracion, name="configuracion"),
     path('home/', login_required(views.Home.as_view()), name="home"),
     
 ]

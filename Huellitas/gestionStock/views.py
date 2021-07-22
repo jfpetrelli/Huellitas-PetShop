@@ -5,6 +5,7 @@ from django.db.models import Q
 from gestionStock.models import Proveedores, Localidades, Articulos
 from gestionStock.forms import ProveedoresForm, ArticulosForm
 from django.contrib.auth.views import LoginView, LogoutView
+import openpyxl
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -103,8 +104,34 @@ def resumen(request):
     return render(request,"resumen.html")
 
 def configuracion(request):
+    if "GET" == request.method:
+        return render(request,"configuracion.html")
+    else:
+        excel_file = request.FILES["excel_file"]
 
-    return render(request,"configuracion.html")
+        # you may put validations here to check extension or file size
+
+        wb = openpyxl.load_workbook(excel_file)
+
+        # getting a particular sheet by name out of many sheets
+        worksheet = wb["Sheet1"]
+        print(worksheet)
+
+        excel_data = list()
+        # iterating over the rows and
+        # getting value from each cell in row
+        count = 0
+        for row in worksheet.iter_rows():
+            count += 1
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            excel_data.append(row_data)
+            if count == 5:
+                break
+        return render(request,"configuracion.html", {"excel_data":excel_data})
+
+
 
 def login(request):
 

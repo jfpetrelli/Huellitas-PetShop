@@ -1,11 +1,81 @@
 {% extends "base.html" %}
 
+{% load static %}
 
 {% block content %}
 
-<div>
-	CONFIGURACION
-</div>
+<style>
+
+    .form-control{
+      border: 1px;
+     border-color: gray;
+     border-style: solid;
+    
+    }
+    .form-control:focus {
+      border: 2px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control::placeholder {
+      color: grey;
+    
+    }
+
+	.custom-file-input ~ .custom-file-label::after {
+    content: "Buscar";
+}
+
+    </style>
+	
+
+<div class="container-lg">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-9"><h2><b>Configuración Lista Articulos - Proveedores</b></h2></div>
+                    <div class="col-sm-3">
+                       <a href="#"><button type="button" class="btn btn-success add-new"><i class="fa fa-plus"></i> Nuevo Artículo</button></a>
+                    </div>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'configuracion' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+                <div class="input-group">
+					<div class="custom-file col-sm-4">
+						<input type="file" class="custom-file-input" id="importFile" name="excel_file">
+						<label class="custom-file-label" for="customFile">Archivo</label>
+					  </div>
+					  <div class="col-sm-3">
+						<input type="submit" class="btn btn-success" value="Vista Previa">
+
+            </form>
+         
+
+           
+          
+         
+ 
+</div>     
+<table class="table table-striped  mt-1">
+  <tbody>
+      {% for row in excel_data %}
+      <tr>
+        {% for cell in row %}
+          <td class="align-middle">{{cell}}</td>
+          {% endfor %}
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+<script>
+	document.querySelector('#importFile').addEventListener('change',function(e){
+  	var fileName = document.getElementById("importFile").files[0].name;
+  	var nextSibling = e.target.nextElementSibling
+  	nextSibling.innerText = fileName
+	});
+
+</script>
 
 
 {% endblock %}
