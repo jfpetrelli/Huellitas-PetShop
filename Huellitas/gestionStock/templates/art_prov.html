@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    .form-control{
+      border: 1px;
+     border-color: gray;
+     border-style: solid;
+    
+    }
+    .form-control:focus {
+      border: 2px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control::placeholder {
+      color: grey;
+    
+    }
+
+    .form-control-sm{
+
+     border-color: grey;
+     border-style: solid;
+    
+    }
+    .form-control-sm:focus {
+      border: 1px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control-sm::placeholder {
+      color: grey;
+    
+    }
+  
+
+	.custom-file-input ~ .custom-file-label::after {
+    content: "Buscar";
+}
+
+    </style>
+	
+
+<div class="container-lg">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-12"><h2><b>Lista Articulos - Proveedores</b></h2></div>
+                    <div>
+                       <a href="#"><button type="button" class="btn btn-success add-new">Importar</button></a>
+                       <a href="{% url 'configuracion' %}"><button type="button" class="btn btn-success add-new">Configurar</button></a>
+                    </div>
+                </div>
+            </div>
+</div>     
+
+
+
+{% endblock %}

@@ -19,8 +19,10 @@ urlpatterns = [
     path('almacenes/articulo_confirm_delete/<int:pk>', login_required(views.ArticuloDelete.as_view()), name="articulo_delete"),
     
 
+
     path('resumen/',views.resumen, name="Resumen"),
-    path('configuracion/',views.configuracion, name="configuracion"),
+    path('artprov/',views.art_prov, name="art_prov"),
+    path('artprov/configuracion',views.configuracion, name="configuracion"),
     path('home/', login_required(views.Home.as_view()), name="home"),
     
 ]

@@ -23,6 +23,24 @@
     
     }
 
+    .form-control-sm{
+
+     border-color: grey;
+     border-style: solid;
+    
+    }
+    .form-control-sm:focus {
+      border: 1px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control-sm::placeholder {
+      color: grey;
+    
+    }
+  
+
 	.custom-file-input ~ .custom-file-label::after {
     content: "Buscar";
 }
@@ -34,32 +52,39 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-9"><h2><b>Configuración Lista Articulos - Proveedores</b></h2></div>
-                    <div class="col-sm-3">
-                       <a href="#"><button type="button" class="btn btn-success add-new"><i class="fa fa-plus"></i> Nuevo Artículo</button></a>
-                    </div>
                 </div>
             </div>
             <form method="POST" action="{% url 'configuracion' %}" enctype="multipart/form-data">
               {% csrf_token %}
                 <div class="input-group">
+                  <select class="form-control-sm" name="tipo_archivo" required>
+                    <option value="">Tipo Archivo</option>
+                    <option value="excel">Excel</option>
+                    <option value="csv">CSV</option>
+                    <option value="txt_del">Txt Delimitado</option>
+                    <option value="txt_af">Txt Ancho Fijo</option>
+                  </select>   
 					<div class="custom-file col-sm-4">
-						<input type="file" class="custom-file-input" id="importFile" name="excel_file">
+						<input type="file" class="custom-file-input" id="importFile" name="file" required>
 						<label class="custom-file-label" for="customFile">Archivo</label>
 					  </div>
-					  <div class="col-sm-3">
+					  <div class="col-sm-2">
 						<input type="submit" class="btn btn-success" value="Vista Previa">
+            
+            </div>
+            <select class="form-control-sm" name="delimitador">
+              <option value="">Delimitador</option>
+              <option value="coma">,</option>
+              <option value="p-coma">;</option>
+              <option value="tab">Tab</option>
+            </select>   
 
             </form>
-         
 
-           
-          
-         
- 
 </div>     
 <table class="table table-striped  mt-1">
   <tbody>
-      {% for row in excel_data %}
+      {% for row in data %}
       <tr>
         {% for cell in row %}
           <td class="align-middle">{{cell}}</td>

@@ -5,7 +5,7 @@ from django.db.models import Q
 from gestionStock.models import Proveedores, Localidades, Articulos
 from gestionStock.forms import ProveedoresForm, ArticulosForm
 from django.contrib.auth.views import LoginView, LogoutView
-import openpyxl
+from gestionStock.logica import configuracion_archivos as ca
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -104,34 +104,31 @@ def resumen(request):
     return render(request,"resumen.html")
 
 def configuracion(request):
+
     if "GET" == request.method:
         return render(request,"configuracion.html")
     else:
-        excel_file = request.FILES["excel_file"]
+        data = list()
+        if request.POST.get('tipo_archivo') == 'excel':
+            arch = request.FILES["file"]
+            data = ca.excel(arch)
 
-        # you may put validations here to check extension or file size
+        if request.POST.get('tipo_archivo') == 'csv':
+            arch = request.FILES["file"]
+            delim = request.POST.get('delimitador')
+            data = ca.txt_del(arch, delim)
 
-        wb = openpyxl.load_workbook(excel_file)
-
-        # getting a particular sheet by name out of many sheets
-        worksheet = wb["Sheet1"]
-        print(worksheet)
-
-        excel_data = list()
-        # iterating over the rows and
-        # getting value from each cell in row
-        count = 0
-        for row in worksheet.iter_rows():
-            count += 1
-            row_data = list()
-            for cell in row:
-                row_data.append(str(cell.value))
-            excel_data.append(row_data)
-            if count == 5:
-                break
-        return render(request,"configuracion.html", {"excel_data":excel_data})
+        if request.POST.get('tipo_archivo') == 'txt_del':
+            arch = request.FILES["file"]
+            delim = request.POST.get('delimitador')
+            data = ca.txt_del(arch,delim)
+        
+        return render(request,"configuracion.html",{'data': data})
 
 
+def art_prov(request):
+
+    return render(request,"art_prov.html")
 
 def login(request):
 

@@ -1,0 +1,8 @@
+ID	Articulo	Precio
+1	Pro plan puppy	700
+2	Pro plan adulto	500
+3	Pro plan gato	800
+4	Pro plan kitten	900
+5	Excelent gato	600
+6	Excelent kitten	750
+7	Cat chow	620
