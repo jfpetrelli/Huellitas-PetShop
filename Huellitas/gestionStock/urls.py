@@ -4,6 +4,8 @@ from gestionStock import views
 
 
 urlpatterns = [
+    
+    path('home/', login_required(views.Home.as_view()), name="home"),
     #LOGIN-LOGOUT
     path('', views.Login.as_view(), name="login"),
     path('logout/', views.Logout.as_view(), name="logout"),
@@ -17,12 +19,15 @@ urlpatterns = [
     path('almacenes/articulo', login_required(views.ArticuloCreate.as_view()), name="articulo_create"),
     path('almacenes/articulo/<int:pk>', login_required(views.ArticuloUpdate.as_view()), name="articulo_update"),
     path('almacenes/articulo_confirm_delete/<int:pk>', login_required(views.ArticuloDelete.as_view()), name="articulo_delete"),
-    
+    #LISTA ARTICULOS PROVEEDORES
+    path('artprov/',views.art_prov, name="art_prov"),
+    path('artprov/configuracion',views.configuracion, name="configuracion"),
+
+
 
 
     path('resumen/',views.resumen, name="Resumen"),
-    path('artprov/',views.art_prov, name="art_prov"),
-    path('artprov/configuracion',views.configuracion, name="configuracion"),
-    path('home/', login_required(views.Home.as_view()), name="home"),
+    
+    
     
 ]

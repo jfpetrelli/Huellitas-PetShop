@@ -100,6 +100,10 @@ class Proveedores(models.Model):
     class Meta:
         verbose_name_plural = "Proveedores"
 
+    def __str__(self):
+        return self.razon_social
+
+
 class Configuracion_Listas(models.Model):
 
     proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE)

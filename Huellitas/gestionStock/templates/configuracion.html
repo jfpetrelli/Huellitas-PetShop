@@ -56,6 +56,7 @@
             </div>
             <form method="POST" action="{% url 'configuracion' %}" enctype="multipart/form-data">
               {% csrf_token %}
+              <div class="row">
                 <div class="input-group">
                   <select class="form-control-sm" name="tipo_archivo" required>
                     <option value="">Tipo Archivo</option>
@@ -64,21 +65,29 @@
                     <option value="txt_del">Txt Delimitado</option>
                     <option value="txt_af">Txt Ancho Fijo</option>
                   </select>   
-					<div class="custom-file col-sm-4">
-						<input type="file" class="custom-file-input" id="importFile" name="file" required>
-						<label class="custom-file-label" for="customFile">Archivo</label>
-					  </div>
-					  <div class="col-sm-2">
-						<input type="submit" class="btn btn-success" value="Vista Previa">
-            
-            </div>
+				
             <select class="form-control-sm" name="delimitador">
               <option value="">Delimitador</option>
               <option value="coma">,</option>
               <option value="p-coma">;</option>
               <option value="tab">Tab</option>
-            </select>   
+            </select>  
+            <select class="form-control-sm" name="proveedores" required>
+              {% for proveedor in proveedores %}
+              <option value="">{{ proveedor }}</option>
+             {% endfor %}
+            </select> 
+          </div>
 
+          
+            <div class="custom-file col-sm-4">
+              <input type="file" class="custom-file-input" id="importFile" name="file" required>
+              <label class="custom-file-label" for="customFile">Archivo</label>
+              </div>
+              <div class="col-sm-2">
+              <input type="submit" class="btn btn-success" value="Vista Previa">
+              
+              </div>
             </form>
 
 </div>     

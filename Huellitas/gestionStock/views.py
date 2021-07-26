@@ -105,8 +105,10 @@ def resumen(request):
 
 def configuracion(request):
 
+    proveedores = Proveedores.objects.all()
+    print(proveedores)
     if "GET" == request.method:
-        return render(request,"configuracion.html")
+        return render(request,"configuracion.html",{'proveedores': proveedores})
     else:
         data = list()
         if request.POST.get('tipo_archivo') == 'excel':
@@ -123,7 +125,8 @@ def configuracion(request):
             delim = request.POST.get('delimitador')
             data = ca.txt_del(arch,delim)
         
-        return render(request,"configuracion.html",{'data': data})
+    
+        return render(request,"configuracion.html",{'data': data, 'proveedores': proveedores})
 
 
 def art_prov(request):
