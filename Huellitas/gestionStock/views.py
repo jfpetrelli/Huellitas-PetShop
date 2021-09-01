@@ -106,7 +106,7 @@ def resumen(request):
 def configuracion(request):
 
     proveedores = Proveedores.objects.all()
-    print(proveedores)
+    
     if "GET" == request.method:
         return render(request,"configuracion.html",{'proveedores': proveedores})
     else:

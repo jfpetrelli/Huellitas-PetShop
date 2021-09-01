@@ -74,7 +74,7 @@
             </select>  
             <select class="form-control-sm" name="proveedores" required>
               {% for proveedor in proveedores %}
-              <option value="">{{ proveedor }}</option>
+              <option>{{ proveedor }}</option>
              {% endfor %}
             </select> 
           </div>
@@ -102,6 +102,42 @@
       {% endfor %}
   </tbody>
 </table>
+
+
+{% if data is not None %}
+<table class="table table-striped  mt-1">
+  
+      <thead>
+        <tr>
+          <th scope="col">DE</th>
+          <th scope="col">A</th>
+        </tr>
+      </thead>
+    <tbody>
+      <tr>
+        <th>
+        <select class="form-control" name="tipo_archivo" required>
+          <option value="col1">Columna 1</option>
+          <option value="col2">Columna 2</option>
+          <option value="col3">Columna 3</option>
+          <option value="col4">Columna 4</option>
+        </select>
+      </th>
+      
+      <th>
+        <select class="form-control" name="tipo_archivo" required>
+          <option value="col1">Columna 1</option>
+          <option value="col2">Columna 2</option>
+          <option value="col3">Columna 3</option>
+          <option value="col4">Columna 4</option>
+        </select>
+      </th>
+      </tr>
+  </tbody>
+</table>
+
+{% endif %}
+
 <script>
 	document.querySelector('#importFile').addEventListener('change',function(e){
   	var fileName = document.getElementById("importFile").files[0].name;
