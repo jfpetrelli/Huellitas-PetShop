@@ -20,8 +20,9 @@ urlpatterns = [
     path('almacenes/articulo/<int:pk>', login_required(views.ArticuloUpdate.as_view()), name="articulo_update"),
     path('almacenes/articulo_confirm_delete/<int:pk>', login_required(views.ArticuloDelete.as_view()), name="articulo_delete"),
     #LISTA ARTICULOS PROVEEDORES
-    path('artprov/',views.art_prov, name="art_prov"),
-    path('artprov/configuracion',views.configuracion, name="configuracion"),
+    path('artprov/',login_required(views.art_prov), name="art_prov"),
+    path('artprov/configuracion',login_required(views.configuracion), name="configuracion"),
+    path('artprov/configuracion/vinculado',login_required(views.vincular_configuracion), name="vincular_configuracion"),
 
 
 

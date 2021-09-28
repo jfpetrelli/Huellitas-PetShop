@@ -128,6 +128,11 @@ def configuracion(request):
     
         return render(request,"configuracion.html",{'data': data, 'proveedores': proveedores})
 
+def vincular_configuracion(request):
+    
+    if request.method == "POST":
+        print(request.POST.get('colum1'))
+    return render(request, "vinculado_configuracion.html")
 
 def art_prov(request):
 

@@ -105,38 +105,82 @@
 
 
 {% if data is not None %}
-<table class="table table-striped  mt-1">
-  
-      <thead>
-        <tr>
-          <th scope="col">DE</th>
-          <th scope="col">A</th>
-        </tr>
-      </thead>
-    <tbody>
-      <tr>
-        <th>
-        <select class="form-control" name="tipo_archivo" required>
-          <option value="col1">Columna 1</option>
-          <option value="col2">Columna 2</option>
-          <option value="col3">Columna 3</option>
-          <option value="col4">Columna 4</option>
-        </select>
-      </th>
-      
-      <th>
-        <select class="form-control" name="tipo_archivo" required>
-          <option value="col1">Columna 1</option>
-          <option value="col2">Columna 2</option>
-          <option value="col3">Columna 3</option>
-          <option value="col4">Columna 4</option>
-        </select>
-      </th>
-      </tr>
-  </tbody>
-</table>
 
+<form method="POST" action="{% url 'vincular_configuracion' %}" enctype="multipart/form-data">
+  {% csrf_token %}
+      <table class="table table-striped  mt-1">
+
+            <thead>
+              <tr>
+                <th scope="col">DE</th>
+                <th scope="col">A</th>
+              </tr>
+            </thead>
+          <tbody>
+            <tr  id="fila1">
+              <th>
+              <select class="form-control" name="colum1">
+                <option value="col0"></option>
+                <option value="col1">Columna 1</option>
+                <option value="col2">Columna 2</option>
+                <option value="col3">Columna 3</option>
+              </select>
+            </th>
+
+            <th>
+              <select class="form-control" name="colum2">
+                <option value="col0"></option>
+                <option value="col1">Cod. Articulo</option>
+                <option value="col2">Descripcion</option>
+                <option value="col3">Precio</option>
+              </select>
+            </th>
+            </tr>
+            <tr  id="fila2">
+              <th>
+              <select class="form-control" name="colum1">
+                <option value="col0"></option>
+                <option value="col1">Columna 1</option>
+                <option value="col2">Columna 2</option>
+                <option value="col3">Columna 3</option>
+              </select>
+            </th>
+
+            <th>
+              <select class="form-control" name="colum2">
+                <option value="col0"></option>
+                <option value="col1">Cod. Articulo</option>
+                <option value="col2">Descripcion</option>
+                <option value="col3">Precio</option>
+              </select>
+            </th>
+            </tr>
+            <tr  id="fila3">
+              <th>
+              <select class="form-control" name="colum1">
+                <option value="col0"></option>
+                <option value="col1">Columna 1</option>
+                <option value="col2">Columna 2</option>
+                <option value="col3">Columna 3</option>
+              </select>
+            </th>
+
+            <th>
+              <select class="form-control" name="colum2">
+                <option value="col0"></option>
+                <option value="col1">Cod. Articulo</option>
+                <option value="col2">Descripcion</option>
+                <option value="col3">Precio</option>
+              </select>
+            </th>
+            </tr>
+        </tbody>
+      </table>
+      <input type="submit" class="btn btn-success" value="Vincular">
+</form>
 {% endif %}
+
+
 
 <script>
 	document.querySelector('#importFile').addEventListener('change',function(e){
