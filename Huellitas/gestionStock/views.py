@@ -6,6 +6,7 @@ from gestionStock.models import Proveedores, Localidades, Articulos
 from gestionStock.forms import ProveedoresForm, ArticulosForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.logica import configuracion_archivos as ca
+import os
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -103,6 +104,7 @@ def resumen(request):
 
     return render(request,"resumen.html")
 
+##CONFIGURACION DE LISTAS
 def configuracion(request):
 
     proveedores = Proveedores.objects.all()
@@ -111,22 +113,26 @@ def configuracion(request):
         return render(request,"configuracion.html",{'proveedores': proveedores})
     else:
         data = list()
-        if request.POST.get('tipo_archivo') == 'excel':
+        split_tup = os.path.splitext(request.FILES["file"].name)
+        print(split_tup[1])
+
+        if request.POST.get('tipo_archivo') == 'excel' and (split_tup[1] == '.xlsx' or split_tup[1] == '.xls'):
             arch = request.FILES["file"]
             data = ca.excel(arch)
 
-        if request.POST.get('tipo_archivo') == 'csv':
+        if request.POST.get('tipo_archivo') == 'csv' and split_tup[1] == '.csv':
             arch = request.FILES["file"]
             delim = request.POST.get('delimitador')
             data = ca.txt_del(arch, delim)
 
-        if request.POST.get('tipo_archivo') == 'txt_del':
+        if request.POST.get('tipo_archivo') == 'txt_del' and split_tup[1] == '.txt':
             arch = request.FILES["file"]
             delim = request.POST.get('delimitador')
             data = ca.txt_del(arch,delim)
         
-    
-        return render(request,"configuracion.html",{'data': data, 'proveedores': proveedores})
+        if len(data) == 0:
+            data = None
+        return render(request,"configuracion.html", {'data': data, 'proveedores': proveedores})
 
 def vincular_configuracion(request):
     

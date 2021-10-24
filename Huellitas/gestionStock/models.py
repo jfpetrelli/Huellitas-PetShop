@@ -3,6 +3,11 @@ from django.utils import timezone
 from Huellitas import settings
 
 # Create your models here.
+TIPO_CHOICES= [
+    ('Alimento', 'Alimento'),
+    ('Ropa', 'Ropa'),
+    ('Accesorio', 'Accesorio')
+    ]
 
 class Paises(models.Model):
 
@@ -38,7 +43,7 @@ class Proveedores(models.Model):
     direccion = models.TextField(max_length = 30, blank = True, default = "")
     telefono = models.TextField(max_length = 30, blank = True, default = "")
     email = models.EmailField(blank = True, default = "")
-    localidad = models.ForeignKey(Localidades, on_delete = models.CASCADE, blank = True, default = "")
+    localidad = models.ForeignKey(Localidades, on_delete = models.CASCADE, null= True)
    
     class Meta:
         verbose_name_plural = "Proveedores"
@@ -53,7 +58,7 @@ class Articulos(models.Model):
     descripcion = models.TextField(max_length = 30)
     stock = models.IntegerField()
     marca = models.TextField(max_length = 30, null= True)
-    tipo = models.TextField(max_length = 30, null= True)
+    tipo = models.TextField(max_length = 30, null= True, choices = TIPO_CHOICES)
     articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "")
     proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, blank = True, default = "")
     precio_costo = models.DecimalField(max_digits=7, decimal_places=2)
@@ -62,6 +67,7 @@ class Articulos(models.Model):
 
     class Meta:
         verbose_name_plural = "Articulos"
+
 
 
 class Configuracion_Listas(models.Model):

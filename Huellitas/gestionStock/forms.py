@@ -37,6 +37,7 @@ class ProveedoresForm(forms.ModelForm):
 
 class ArticulosForm(forms.ModelForm):
 
+
     class Meta:
         model = Articulos
 
@@ -63,15 +64,18 @@ class ArticulosForm(forms.ModelForm):
 
 
         }
-
+        
+        
         widgets = {
             'descripcion': forms.TextInput(attrs={'class':'form-control'}),
             'stock': forms.NumberInput(attrs={'class':'form-control'}),
             'marca': forms.TextInput(attrs={'class':'form-control'}),
-            'tipo': forms.TextInput(attrs={'class':'form-control'}),
+            'tipo': forms.Select(attrs={'class':'form-control'}),
             'precio_costo': forms.NumberInput(attrs={'class':'form-control'}),
             'precio_vta': forms.NumberInput(attrs={'class':'form-control'}),
             'fecha_actualizacion': forms.DateInput(attrs={'class':'form-control','type':'date','required': False}),
             'proveedor': forms.Select(attrs={'class':'form-control','required': False}),
 
         }
+
+
