@@ -53,6 +53,10 @@
                         <th class="align-middle">Articulo</th>
                         <th class="align-middle">Marca</th>
                         <th class="align-middle">Tipo</th>
+                        <th class="align-middle">Costo</th>
+                        <th class="align-middle">Precio Venta</th>
+                        <th class="align-middle">Proveedor</th>
+                        <th class="align-middle">Ultima actualizacion</th>
                         <th class="align-middle">Stock</th>
                         <th class="align-middle">Accion</th>
                     </tr>
@@ -64,6 +68,10 @@
                         <td class="align-middle">{{articulo.descripcion}}</td>
                         <td class="align-middle">{{articulo.marca}}</td>
                         <td class="align-middle">{{articulo.tipo}}</td>
+                        <td class="align-middle">{{articulo.precio_costo}}</td>
+                        <td class="align-middle">{{articulo.precio_vta}}</td>
+                        <td class="align-middle">{{articulo.proveedor}}</td>
+                        <td class="align-middle">{{articulo.fecha_actualizacion}}</td>
                         <td class="align-middle">{{articulo.stock}}</td>
                         <td class="align-middle">
                             <a href="{% url 'articulo_update' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-pencil fa-xs" aria-hidden="true"></i></button></a>

@@ -34,6 +34,7 @@ class ProveedoresForm(forms.ModelForm):
 
         }
 
+
 class ArticulosForm(forms.ModelForm):
 
     class Meta:
@@ -44,6 +45,10 @@ class ArticulosForm(forms.ModelForm):
             'stock',
             'marca',
             'tipo',
+            'precio_costo',
+            'precio_vta',
+            'fecha_actualizacion',
+            'proveedor',
         ]
 
         labels = {
@@ -51,11 +56,22 @@ class ArticulosForm(forms.ModelForm):
             'stock': 'Stock',
             'marca': 'Marca',
             'tipo': 'Tipo',
+            'precio_costo': 'Costo',
+            'precio_vta': 'Precio Venta',
+            'fecha_actualizacion': 'Ultima Actualizacion',
+            'proveedor': 'Proveedor',
+
+
         }
 
         widgets = {
             'descripcion': forms.TextInput(attrs={'class':'form-control'}),
             'stock': forms.NumberInput(attrs={'class':'form-control'}),
-            'marca': forms.Select(attrs={'class':'form-control'}),
-            'tipo': forms.Select(attrs={'class':'form-control'}),
+            'marca': forms.TextInput(attrs={'class':'form-control'}),
+            'tipo': forms.TextInput(attrs={'class':'form-control'}),
+            'precio_costo': forms.NumberInput(attrs={'class':'form-control'}),
+            'precio_vta': forms.NumberInput(attrs={'class':'form-control'}),
+            'fecha_actualizacion': forms.DateInput(attrs={'class':'form-control','type':'date','required': False}),
+            'proveedor': forms.Select(attrs={'class':'form-control','required': False}),
+
         }
