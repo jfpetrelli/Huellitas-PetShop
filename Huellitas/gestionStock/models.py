@@ -59,7 +59,7 @@ class Articulos(models.Model):
     stock = models.IntegerField()
     marca = models.TextField(max_length = 30, null= True)
     tipo = models.TextField(max_length = 30, null= True, choices = TIPO_CHOICES)
-    articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "")
+    articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "", null = True)
     proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, blank = True, default = "")
     precio_costo = models.DecimalField(max_digits=7, decimal_places=2)
     precio_vta = models.DecimalField(max_digits=7, decimal_places=2)
@@ -82,12 +82,10 @@ class Configuracion_Listas(models.Model):
 
 class Configuracion_Columnas(models.Model):
 
-    tipo_dato = models.TextField(max_length = 10)
-    decimal = models.TextField(max_length = 10, blank = True)
-    miles = models.TextField(max_length = 10, blank = True)
-    columna_archivo = models.IntegerField()
-    columna_bd = models.IntegerField()
-    cant_caracteres = models.IntegerField(null = True)
+    decimal = models.TextField(max_length = 10, blank = True, null = True)
+    miles = models.TextField(max_length = 10, blank = True, null = True)
+    columna_archivo = models.TextField(max_length = 10)
+    columna_bd = models.TextField(max_length = 10)
     lista = models.ForeignKey(Configuracion_Listas, on_delete = models.CASCADE,null= True)
    
     class Meta:

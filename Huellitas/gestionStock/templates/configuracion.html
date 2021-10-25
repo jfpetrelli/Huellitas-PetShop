@@ -7,9 +7,11 @@
 <style>
 
     .form-control{
-      border: 1px;
+      border: 0.5px;
      border-color: gray;
      border-style: solid;
+     border-radius: 0;
+     
     
     }
     .form-control:focus {
@@ -20,6 +22,7 @@
     }
     .form-control::placeholder {
       color: grey;
+      
     
     }
 
@@ -56,37 +59,32 @@
             </div>
             <form method="POST" action="{% url 'configuracion' %}" enctype="multipart/form-data">
               {% csrf_token %}
-              <div class="row">
+              <div class="form-group">
                 <div class="input-group">
-                  <select class="form-control-sm" name="tipo_archivo" required>
+                  <select class="form-control col-2 mr-2" name="tipo_archivo" required>
                     <option value="">Tipo Archivo</option>
                     <option value="excel">Excel</option>
                     <option value="csv">CSV</option>
                     <option value="txt_del">Texto</option>
                   </select>   
 				
-            <select class="form-control-sm" name="delimitador">
+            <select class="form-control col-2  " name="delimitador">
               <option value="">Delimitador</option>
               <option value="coma">,</option>
               <option value="p-coma">;</option>
               <option value="tab">Tab</option>
             </select>  
-            <select class="form-control-sm" name="proveedores" required>
-              {% for proveedor in proveedores %}
-              <option>{{ proveedor }}</option>
-             {% endfor %}
-            </select> 
+           
           </div>
-
-          
-            <div class="custom-file col-sm-4">
+          <br>
+            <div class="custom-file col-sm-4  form-group">
               <input type="file" class="custom-file-input" id="importFile" name="file" required>
               <label class="custom-file-label" for="customFile">Archivo</label>
               </div>
-              <div class="col-sm-2">
+         
               <input type="submit" class="btn btn-success" value="Vista Previa">
               
-              </div>
+         
             </form>
 
 </div>     
@@ -107,8 +105,43 @@
 
 <form method="POST" action="{% url 'vincular_configuracion' %}" enctype="multipart/form-data">
   {% csrf_token %}
-      <table class="table table-striped  mt-1">
+  {% for arch_delim in arch_delim %}
+ <input type="hidden" name="arch" value="{{arch_delim}}">
+ {% endfor %}
+  <br>
+  <br>
+  <div class="form-group ">
+    <div class="input-group">
+      <input type="number" min="0" max="100" name="cabecera" class="form-control col-2 mr-2" placeholder="Cabecera">
+  <select class="form-control col-3" name="proveedores" required>
+    {% for proveedor in proveedores %}
+    <option value="{{proveedor.id}}">{{ proveedor }}</option>
+   {% endfor %}
+  </select> 
+</div>
+</div>
+<br>
+<label for="">Separador</label>
+<div class="form-group" >
+  <div class="input-group">
+  <select class="form-control col-2 mr-2" name="miles"> 
+    <option value="sin_separador">Miles</option>
+    <option value="sin_separador"></option>
+    <option value="punto">.</option> 
+    <option value="coma">,</option> 
+  </select>
 
+  <select class="form-control col-2" name="decimales"> 
+    <option value="sin_separador">Decimales</option>
+    <option value="sin_separador"></option>
+    <option value="punto">.</option> 
+    <option value="coma">,</option> 
+  </select>
+</div>
+</div>
+
+  
+      <table class="table table-striped  mt-1">
             <thead>
               <tr>
                 <th scope="col">DE</th>
@@ -116,61 +149,46 @@
               </tr>
             </thead>
           <tbody>
-            <tr  id="fila1">
-              <th>
-              <select class="form-control" name="colum1">
+            <tr name='fila1'>
+              <th >
+              <select class="form-control" name="cod_articulo">
                 <option value="col0"></option>
-                <option value="col1">Columna 1</option>
-                <option value="col2">Columna 2</option>
-                <option value="col3">Columna 3</option>
+                {% for num in num_colums %}
+                 <option value="col{{num}}">Columna {{ num }}</option> 
+                {% endfor %}
               </select>
             </th>
 
             <th>
-              <select class="form-control" name="colum2">
+              <input class="form-control" type="text" id="" name="cor_art" placeholder="Cod. Articulo" disabled>     
+            </th>
+            </tr >
+            <tr name='fila2'>
+              <th>
+              <select class="form-control" name="descripcion">
                 <option value="col0"></option>
-                <option value="col1">Cod. Articulo</option>
-                <option value="col2">Descripcion</option>
-                <option value="col3">Precio</option>
+                {% for num in num_colums %}
+                 <option value="col{{num}}">Columna {{ num }}</option> 
+                {% endfor %}
               </select>
+            </th>
+
+            <th>
+              <input class="form-control" type="text" id="" name="descrip" placeholder="Descripcion" disabled>
             </th>
             </tr>
-            <tr  id="fila2">
+            <tr name='fila3'>
               <th>
-              <select class="form-control" name="colum1">
+              <select class="form-control" name="precio">
                 <option value="col0"></option>
-                <option value="col1">Columna 1</option>
-                <option value="col2">Columna 2</option>
-                <option value="col3">Columna 3</option>
+                {% for num in num_colums %}
+                <option value="col{{num}}">Columna {{ num }}</option> 
+               {% endfor %}
               </select>
             </th>
 
             <th>
-              <select class="form-control" name="colum2">
-                <option value="col0"></option>
-                <option value="col1">Cod. Articulo</option>
-                <option value="col2">Descripcion</option>
-                <option value="col3">Precio</option>
-              </select>
-            </th>
-            </tr>
-            <tr  id="fila3">
-              <th>
-              <select class="form-control" name="colum1">
-                <option value="col0"></option>
-                <option value="col1">Columna 1</option>
-                <option value="col2">Columna 2</option>
-                <option value="col3">Columna 3</option>
-              </select>
-            </th>
-
-            <th>
-              <select class="form-control" name="colum2">
-                <option value="col0"></option>
-                <option value="col1">Cod. Articulo</option>
-                <option value="col2">Descripcion</option>
-                <option value="col3">Precio</option>
-              </select>
+              <input class="form-control" type="text" id="" name="precio" placeholder="Precio" disabled>
             </th>
             </tr>
         </tbody>
