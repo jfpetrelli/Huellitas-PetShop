@@ -123,15 +123,24 @@ def configuracion(request):
         if request.POST.get('tipo_archivo') == 'csv' and split_tup[1] == '.csv':
             arch = request.FILES["file"]
             delim = request.POST.get('delimitador')
-            data = ca.txt_del(arch, delim)
+            print(delim)
+            if delim == '': 
+                return render(request,"error_tipo_archivo_extension.html")
+            else:
+                data = ca.txt_del(arch, delim)
 
         if request.POST.get('tipo_archivo') == 'txt_del' and split_tup[1] == '.txt':
             arch = request.FILES["file"]
             delim = request.POST.get('delimitador')
-            data = ca.txt_del(arch,delim)
+            if delim == '': 
+                return render(request,"error_tipo_archivo_extension.html")
+            else:
+                data = ca.txt_del(arch,delim)
         
         if len(data) == 0:
             data = None
+            return render(request,"error_tipo_archivo_extension.html")
+
         return render(request,"configuracion.html", {'data': data, 'proveedores': proveedores})
 
 def vincular_configuracion(request):
