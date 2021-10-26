@@ -1,5 +1,5 @@
 from django import forms
-from gestionStock.models import Proveedores, Articulos
+from gestionStock.models import Proveedores, Articulos, Configuracion_Listas
 
 class ProveedoresForm(forms.ModelForm):
 
@@ -79,3 +79,29 @@ class ArticulosForm(forms.ModelForm):
         }
 
 
+class ConfiguracionListForm(forms.ModelForm):
+
+    class Meta:
+        model = Configuracion_Listas
+
+        fields = [
+            'proveedor',
+            'cabecera',
+            'tipo_archivo',
+            'delimitador',
+        ]
+
+        labels = {
+            'proveedor': 'Proveedor',
+            'cabecera': 'Cabecera',
+            'tipo_archivo': 'Tipo Archivo',
+            'delimitador': 'Delimitador',
+        }
+
+        widgets = {
+            'proveedor': forms.TextInput(attrs={'class':'form-control'}),
+            'cabecera': forms.TextInput(attrs={'class':'form-control'}),
+            'tipo_archivo': forms.TextInput(attrs={'class':'form-control'}),
+            'delimitador': forms.TextInput(attrs={'class':'form-control'}),
+
+        }

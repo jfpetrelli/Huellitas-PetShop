@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView, TemplateView, UpdateView,
 from django.urls import reverse_lazy
 from django.db.models import Q
 from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
-from gestionStock.forms import ProveedoresForm, ArticulosForm
+from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.logica import configuracion_archivos as ca, insertar as ins
 
@@ -166,6 +166,27 @@ def vincular_configuracion(request):
 
     return render(request, "vinculado_configuracion.html")
 
+class ConfigurarList(ListView):
+    model = Configuracion_Listas
+    queryset = model.objects.all()
+    context_object_name = "configuracion_list"
+    template_name = "configuracion_list.html"
+    paginate_by = 5
+
+    def get_queryset(self): # new
+        query = self.request.GET.get('buscar')
+        if query:
+            object_list = Configuracion_Listas.objects.filter(
+                Q(proveedor__icontains=query)
+            )
+        else:
+            object_list = Configuracion_Listas.objects.all()
+        return object_list
+
+class ConfigurarListDelete(DeleteView):
+    model = Configuracion_Listas
+    template_name = "configurar_list_confirm_delete.html"
+    success_url = reverse_lazy('configuracion_list')
 
 
 ##LOGIN
