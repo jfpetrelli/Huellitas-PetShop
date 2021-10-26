@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    .form-control{
+      border: 0.5px;
+     border-color: gray;
+     border-style: solid;
+     border-radius: 0;
+     
+    
+    }
+    .form-control:focus {
+      border: 2px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control::placeholder {
+      color: grey;
+      
+    
+    }
+
+    .form-control-sm{
+
+     border-color: grey;
+     border-style: solid;
+    
+    }
+    .form-control-sm:focus {
+      border: 1px;
+      border-color: green;
+      border-style: solid;
+       
+    }
+    .form-control-sm::placeholder {
+      color: grey;
+    
+    }
+  
+
+	.custom-file-input ~ .custom-file-label::after {
+    content: "Buscar";
+}
+
+    </style>
+	
+
+<div class="container-lg">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-9"><h2><b>Importar Lista Articulos - Proveedores</b></h2></div>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'importar_lista' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group ">
+                <div class="input-group">
+              <select class="form-control col-3" name="proveedores" required>
+                {% for proveedor in proveedores %}
+                <option value="{{proveedor.id}}">{{ proveedor }}</option>
+               {% endfor %}
+              </select> 
+            </div>
+            </div>
+            <div class="custom-file col-sm-4  form-group">
+              <input type="file" class="custom-file-input" id="importFile" name="file" required>
+              <label class="custom-file-label" for="customFile">Archivo</label>
+              </div>
+         
+              <input type="submit" class="btn btn-success" value="Importar">
+              
+         
+            </form>
+
+
+
+<script>
+	document.querySelector('#importFile').addEventListener('change',function(e){
+  	var fileName = document.getElementById("importFile").files[0].name;
+  	var nextSibling = e.target.nextElementSibling
+  	nextSibling.innerText = fileName
+	});
+
+</script>
+
+
+{% endblock %}

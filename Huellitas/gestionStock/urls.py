@@ -25,6 +25,7 @@ urlpatterns = [
     path('artprov/configuracion_list',login_required(views.ConfigurarList.as_view()), name="configuracion_list"),
     path('artprov/configuracion_list_confirm_delete/<int:pk>', login_required(views.ConfigurarListDelete.as_view()), name="configurar_list_delete"),
     path('artprov/configuracion/vinculado',login_required(views.vincular_configuracion), name="vincular_configuracion"),
+    path('artprov/importar',login_required(views.importar_lista), name="importar_lista"),
 
 
 

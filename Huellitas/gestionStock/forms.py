@@ -43,6 +43,7 @@ class ArticulosForm(forms.ModelForm):
 
         fields = [
             'descripcion',
+            'articulo_proveedor',
             'stock',
             'marca',
             'tipo',
@@ -54,6 +55,7 @@ class ArticulosForm(forms.ModelForm):
 
         labels = {
             'descripcion': 'Articulo',
+            'articulo_proveedor': 'Art. Proveedor',
             'stock': 'Stock',
             'marca': 'Marca',
             'tipo': 'Tipo',
@@ -68,6 +70,7 @@ class ArticulosForm(forms.ModelForm):
         
         widgets = {
             'descripcion': forms.TextInput(attrs={'class':'form-control'}),
+            'articulo_proveedor': forms.TextInput(attrs={'class':'form-control'}),
             'stock': forms.NumberInput(attrs={'class':'form-control'}),
             'marca': forms.TextInput(attrs={'class':'form-control'}),
             'tipo': forms.Select(attrs={'class':'form-control'}),

@@ -4,6 +4,7 @@ from Huellitas import settings
 
 # Create your models here.
 TIPO_CHOICES= [
+    ('', ''),
     ('Alimento', 'Alimento'),
     ('Ropa', 'Ropa'),
     ('Accesorio', 'Accesorio')
@@ -56,13 +57,13 @@ class Proveedores(models.Model):
 class Articulos(models.Model):
 
     descripcion = models.TextField(max_length = 30)
-    stock = models.IntegerField()
-    marca = models.TextField(max_length = 30, null= True)
-    tipo = models.TextField(max_length = 30, null= True, choices = TIPO_CHOICES)
+    stock = models.IntegerField(default = 0)
+    marca = models.TextField(max_length = 30, null= True, blank = True, default = "")
+    tipo = models.TextField(max_length = 30,  choices = TIPO_CHOICES, blank= True, default = "")
     articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "", null = True)
-    proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, blank = True, default = "")
-    precio_costo = models.DecimalField(max_digits=7, decimal_places=2)
-    precio_vta = models.DecimalField(max_digits=7, decimal_places=2)
+    proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, blank = True, default = "", null = True)
+    precio_costo = models.DecimalField(max_digits=14, decimal_places=2, default = 0)
+    precio_vta = models.DecimalField(max_digits=14, decimal_places=2, default = 0)
     fecha_actualizacion = models.DateField(default=timezone.now)
 
     class Meta:
