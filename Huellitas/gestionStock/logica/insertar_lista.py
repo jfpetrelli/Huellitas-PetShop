@@ -102,7 +102,6 @@ def convertir_precio(precio, separador_decimal, separador_mil):
     if type(precio) == int:
        return float(precio)
     if type(precio) == float:
-        print("LLEGA")
         return float(precio)
     
     sep = precio.find(separador_decimal)
