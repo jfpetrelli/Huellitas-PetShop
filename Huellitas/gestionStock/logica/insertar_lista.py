@@ -13,7 +13,7 @@ def insertar_lista(proveedor, lista_proveedor):
     conf_lista = Configuracion_Listas.objects.filter(proveedor=proveedor).values_list('pk','proveedor','cabecera','tipo_archivo','delimitador')
     #data = serializers.serialize("json", Configuracion_Listas.objects.filter(proveedor=proveedor), fields=('proveedor','cabecera','tipo_archivo','delimitador'))
     conf_lista_list = list(conf_lista)
-    conf_columnas = Configuracion_Columnas.objects.filter(lista=conf_lista_list[0][0]).values_list('decimal','miles','columna_archivo','columna_bd')
+    conf_columnas = Configuracion_Columnas.objects.filter(lista=conf_lista_list[0][0]).values_list('decimal','columna_archivo','columna_bd')
     conf_columnas_list = list(conf_columnas)
     print(conf_lista_list)
     print(conf_columnas_list)
@@ -36,7 +36,7 @@ def insertar_lista(proveedor, lista_proveedor):
     precio_articulo_str = conf_columnas_list[2][2]
     precio_articulo = int(precio_articulo_str[3])
     separador_decimal = conf_columnas_list[2][0]
-    separador_mil = conf_columnas_list[2][1]
+
 
 
     print(lista_proveedor)
@@ -62,7 +62,7 @@ def insertar_lista(proveedor, lista_proveedor):
     print(lista_datos_acotada)
     for arreglo in lista_datos_acotada:
 
-        precio_nuevo = convertir_precio(arreglo[precio_articulo-1], separador_decimal, separador_mil)
+        precio_nuevo = convertir_precio(arreglo[precio_articulo-1], separador_decimal)
 
         #EXISTE EL ARTICULO EN LA BD?
         #SI NO EXISTE INSERTA
@@ -133,7 +133,7 @@ def actualizar_articulo(proveedor, codigo_articulo, descripcion_articulo, precio
             sqliteConnection.close()
             print("The SQLite connection is closed")
 
-def convertir_precio(precio, separador_decimal, separador_mil):
+def convertir_precio(precio, separador_decimal):
     
     if precio == '':
         return 0

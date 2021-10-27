@@ -84,7 +84,6 @@ class Configuracion_Listas(models.Model):
 class Configuracion_Columnas(models.Model):
 
     decimal = models.TextField(max_length = 10, blank = True, null = True)
-    miles = models.TextField(max_length = 10, blank = True, null = True)
     columna_archivo = models.TextField(max_length = 10)
     columna_bd = models.TextField(max_length = 10)
     lista = models.ForeignKey(Configuracion_Listas, on_delete = models.CASCADE,null= True)

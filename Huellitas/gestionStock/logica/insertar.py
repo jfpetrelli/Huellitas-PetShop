@@ -14,7 +14,6 @@ def insertar(datos):
     delimitador = datos_archivos[1]
     cabecera = datos.get('cabecera')
     proveedor = datos.get('proveedores')
-    separador_miles = datos.get('miles')
     separador_decimales = datos.get('decimales')
     codigo_articulo = datos.get('cod_articulo')
     descripcion_articulo = datos.get('descripcion')
@@ -66,8 +65,8 @@ def insertar(datos):
         print("Successfully Connected to SQLite")
         
         sqlite_insert_query = """INSERT INTO gestionStock_configuracion_columnas
-                          (decimal, columna_archivo, columna_bd, miles, lista_id) 
-                            VALUES (?, ?, ?, ?, ?);"""
+                          (decimal, columna_archivo, columna_bd, lista_id) 
+                            VALUES (?, ?, ?, ?);"""
 
         ##CODIGO ARTICULO
         data_tuple = ('', codigo_articulo,'codigo_articulo', '', int(id))
@@ -78,8 +77,8 @@ def insertar(datos):
         ##DESCRIPCION ARTICULO
         cursor = sqliteConnection.cursor()
         sqlite_insert_query = """INSERT INTO gestionStock_configuracion_columnas
-                          (decimal, columna_archivo, columna_bd, miles, lista_id) 
-                            VALUES (?, ?, ?, ?, ?);"""
+                          (decimal, columna_archivo, columna_bd, lista_id) 
+                            VALUES (?, ?, ?, ?);"""
         data_tuple = ('', descripcion_articulo,'descripcion_articulo', '', int(id))
         cursor.execute(sqlite_insert_query, data_tuple)
         sqliteConnection.commit()
@@ -88,9 +87,9 @@ def insertar(datos):
         ##PRECIO ARTICULO
         cursor = sqliteConnection.cursor()
         sqlite_insert_query = """INSERT INTO gestionStock_configuracion_columnas
-                          (decimal, columna_archivo, columna_bd, miles, lista_id) 
-                            VALUES (?, ?, ?, ?, ?);"""
-        data_tuple = (separador_decimales, precio_articulo,'precio_articulo', separador_miles, int(id))
+                          (decimal, columna_archivo, columna_bd, lista_id) 
+                            VALUES (?, ?, ?, ?);"""
+        data_tuple = (separador_decimales, precio_articulo,'precio_articulo', int(id))
         cursor.execute(sqlite_insert_query, data_tuple)
         sqliteConnection.commit()
         cursor.close()
