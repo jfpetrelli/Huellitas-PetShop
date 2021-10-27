@@ -54,6 +54,26 @@
             {{ form.stock }}
           </div>
         </div>
+        <div class="class form-row">
+          <div class="class form-group col-md-3">
+            <label for="precio_costo">{{ form.precio_costo.label }}</label>
+            {{ form.precio_costo }}
+          </div>
+          <div class="class form-group col-md-3">
+            <label for="precio_vta">{{ form.precio_vta.label }}</label>
+            {{ form.precio_vta }}
+          </div>
+        </div>
+        <div class="class form-row">
+          <div class="class form-group col-md-3">
+            <label for="fecha_actualizacion">{{ form.fecha_actualizacion.label }}</label>
+            {{ form.fecha_actualizacion }}
+          </div>
+          <div class="class form-group col-md-6">
+            <label for="proveedor">{{ form.proveedor.label }}</label>
+            {{ form.proveedor }}
+          </div>
+        </div>
         <button type="submit" class="btn btn-success">Guardar</button>
         <a href="{% url 'articulo_list' %}" class="btn btn-success">Cancelar</a>
   </form>

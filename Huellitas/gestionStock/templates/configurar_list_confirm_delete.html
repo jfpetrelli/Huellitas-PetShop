@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    <h3>Desea eliminar el registro? </h3>
+    <button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
+    <a class="btn btn-danger btn-xs" href="{% url 'configuracion_list' %}">Cancelar</a>
+</form>
+
+
+{% endblock %}

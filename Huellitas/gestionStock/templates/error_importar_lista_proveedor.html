@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div>
+    El proveedor no tiene lista configurada.
+    <br>
+    <a class="btn btn-danger btn-xs" href="{% url 'importar_lista' %}">Volver</a>
+</div>
+
+{% endblock %}

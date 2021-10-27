@@ -2,10 +2,12 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
-from gestionStock.models import Proveedores, Localidades, Articulos
-from gestionStock.forms import ProveedoresForm, ArticulosForm
+from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
+from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
 from django.contrib.auth.views import LoginView, LogoutView
-from gestionStock.logica import configuracion_archivos as ca
+from gestionStock.logica import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
+import os
+import sqlite3
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -34,7 +36,7 @@ class ProveedoresList(ListView):
     queryset = model.objects.all()
     context_object_name = "proveedores"
     template_name = "proveedores.html"
-    paginate_by = 5
+    paginate_by = 20
 
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
@@ -70,13 +72,13 @@ class ArticulosList(ListView):
     queryset = model.objects.all()
     context_object_name = "articulos"
     template_name = "almacen.html"
-    paginate_by = 5
+    paginate_by = 20
 
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
         if query:
             object_list = Articulos.objects.filter(
-                Q(descripcion__icontains  =query))
+                Q(descripcion__icontains  = query))
         else:
             object_list = Articulos.objects.all()
         return object_list
@@ -99,45 +101,130 @@ class ArticuloDelete(DeleteView):
     success_url = reverse_lazy('articulo_list')
 
 
-def resumen(request):
-
-    return render(request,"resumen.html")
-
-def configuracion(request):
-
-    proveedores = Proveedores.objects.all()
-    
-    if "GET" == request.method:
-        return render(request,"configuracion.html",{'proveedores': proveedores})
-    else:
-        data = list()
-        if request.POST.get('tipo_archivo') == 'excel':
-            arch = request.FILES["file"]
-            data = ca.excel(arch)
-
-        if request.POST.get('tipo_archivo') == 'csv':
-            arch = request.FILES["file"]
-            delim = request.POST.get('delimitador')
-            data = ca.txt_del(arch, delim)
-
-        if request.POST.get('tipo_archivo') == 'txt_del':
-            arch = request.FILES["file"]
-            delim = request.POST.get('delimitador')
-            data = ca.txt_del(arch,delim)
-        
-    
-        return render(request,"configuracion.html",{'data': data, 'proveedores': proveedores})
-
-def vincular_configuracion(request):
-    
-    if request.method == "POST":
-        print(request.POST.get('colum1'))
-    return render(request, "vinculado_configuracion.html")
-
+##CONFIGURACION DE LISTAS
 def art_prov(request):
 
     return render(request,"art_prov.html")
 
+def configuracion(request):
+
+    proveedores = Proveedores.objects.all()
+
+
+    if "GET" == request.method:
+        return render(request,"configuracion.html",{'proveedores': proveedores})
+    else:
+        data = list()
+        split_tup = os.path.splitext(request.FILES["file"].name)
+        print(split_tup[1])
+
+        if request.POST.get('tipo_archivo') == 'excel' and (split_tup[1] == '.xlsx' or split_tup[1] == '.xls'):
+            arch = request.FILES["file"]
+            data = ca.excel(arch)
+
+        if request.POST.get('tipo_archivo') == 'csv' and split_tup[1] == '.csv':
+            arch = request.FILES["file"]
+            delim = request.POST.get('delimitador')
+            print(delim)
+            if delim == '': 
+                return render(request,"error_tipo_archivo_extension.html")
+            else:
+                data = ca.txt_del(arch, delim)
+
+        if request.POST.get('tipo_archivo') == 'txt' and split_tup[1] == '.txt':
+            arch = request.FILES["file"]
+            delim = request.POST.get('delimitador')
+            if delim == '': 
+                return render(request,"error_tipo_archivo_extension.html")
+            else:
+                data = ca.txt_del(arch,delim)
+
+        if len(data) == 0:
+            data = None
+            return render(request,"error_tipo_archivo_extension.html")
+        
+        num_colums = list()
+        for i in range(0,len(data[0])):
+            num_colums.append(i+1)
+        
+        arch_delim = list()
+        arch_delim.append(request.POST.get('tipo_archivo'))
+        arch_delim.append(request.POST.get('delimitador'))
+        print(proveedores)
+        return render(request,"configuracion.html", {'data': data, 'proveedores': proveedores, 'num_colums': num_colums, 'arch_delim': arch_delim})
+
+def vincular_configuracion(request):
+    
+    if request.method == "POST":
+        
+        configuracion_listas = Configuracion_Listas.objects.filter(proveedor_id=request.POST.get('proveedores')).exists()
+        if configuracion_listas:
+            return render(request, "no_vinculado.html")
+
+        ins.insertar(request.POST)
+
+    return render(request, "vinculado_configuracion.html")
+
+class ConfigurarList(ListView):
+    model = Configuracion_Listas
+    queryset = model.objects.all()
+    context_object_name = "configuracion_list"
+    template_name = "configuracion_list.html"
+    paginate_by = 20
+
+    def get_queryset(self): # new
+        query = self.request.GET.get('buscar')
+        if query:
+            object_list = Configuracion_Listas.objects.filter(
+                Q(proveedor__icontains=query)
+            )
+        else:
+            object_list = Configuracion_Listas.objects.all()
+        return object_list
+
+class ConfigurarListDelete(DeleteView):
+    model = Configuracion_Listas
+    template_name = "configurar_list_confirm_delete.html"
+    success_url = reverse_lazy('configuracion_list')
+
+def importar_lista(request):
+    proveedores = Proveedores.objects.all()
+    if "GET" == request.method:
+        return render(request,"importar_lista.html",{'proveedores': proveedores})
+    
+    proveedor = request.POST.get('proveedores')
+
+
+    split_tup = os.path.splitext(request.FILES["file"].name)
+    tipo_archivo = ''
+    tipo_extension = split_tup[1]
+    tipo_archivo_list = list(Configuracion_Listas.objects.filter(proveedor=proveedor).values_list('tipo_archivo'))
+    if tipo_archivo_list == []:
+        return render(request,"error_importar_lista_proveedor.html")
+    print(tipo_archivo_list[0][0])
+    if tipo_archivo_list[0][0] == 'excel':
+        tipo_archivo = '.xls'
+    if  tipo_archivo_list[0][0] == 'csv':
+        tipo_archivo = '.csv'
+    if  tipo_archivo_list[0][0] == 'txt':
+        tipo_archivo = '.txt'
+    if tipo_extension == '.xlsx':
+        tipo_extension = '.xls'
+    
+    print(tipo_archivo, tipo_extension)
+    
+    if tipo_extension == tipo_archivo:
+        ins_list.insertar_lista(proveedor, request.FILES["file"])
+        return render(request,"importar_lista.html", {'proveedores': proveedores})
+
+    return render(request,"error_importar_lista.html")
+
+
+
+
+
+
+##LOGIN
 def login(request):
 
     return render(request,"login.html")
@@ -146,5 +233,7 @@ def login(request):
 
     
 
+def resumen(request):
 
+    return render(request,"resumen.html")
 

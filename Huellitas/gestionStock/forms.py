@@ -1,5 +1,5 @@
 from django import forms
-from gestionStock.models import Proveedores, Articulos
+from gestionStock.models import Proveedores, Articulos, Configuracion_Listas
 
 class ProveedoresForm(forms.ModelForm):
 
@@ -34,28 +34,77 @@ class ProveedoresForm(forms.ModelForm):
 
         }
 
+
 class ArticulosForm(forms.ModelForm):
+
 
     class Meta:
         model = Articulos
 
         fields = [
             'descripcion',
+            'articulo_proveedor',
             'stock',
             'marca',
             'tipo',
+            'precio_costo',
+            'precio_vta',
+            'fecha_actualizacion',
+            'proveedor',
         ]
 
         labels = {
             'descripcion': 'Articulo',
+            'articulo_proveedor': 'Art. Proveedor',
             'stock': 'Stock',
             'marca': 'Marca',
             'tipo': 'Tipo',
+            'precio_costo': 'Costo',
+            'precio_vta': 'Precio Venta',
+            'fecha_actualizacion': 'Ultima Actualizacion',
+            'proveedor': 'Proveedor',
+
+
+        }
+        
+        
+        widgets = {
+            'descripcion': forms.TextInput(attrs={'class':'form-control'}),
+            'articulo_proveedor': forms.TextInput(attrs={'class':'form-control'}),
+            'stock': forms.NumberInput(attrs={'class':'form-control'}),
+            'marca': forms.TextInput(attrs={'class':'form-control'}),
+            'tipo': forms.Select(attrs={'class':'form-control'}),
+            'precio_costo': forms.NumberInput(attrs={'class':'form-control'}),
+            'precio_vta': forms.NumberInput(attrs={'class':'form-control'}),
+            'fecha_actualizacion': forms.DateInput(attrs={'class':'form-control','type':'date','required': False}),
+            'proveedor': forms.Select(attrs={'class':'form-control','required': False}),
+
+        }
+
+
+class ConfiguracionListForm(forms.ModelForm):
+
+    class Meta:
+        model = Configuracion_Listas
+
+        fields = [
+            'proveedor',
+            'cabecera',
+            'tipo_archivo',
+            'delimitador',
+        ]
+
+        labels = {
+            'proveedor': 'Proveedor',
+            'cabecera': 'Cabecera',
+            'tipo_archivo': 'Tipo Archivo',
+            'delimitador': 'Delimitador',
         }
 
         widgets = {
-            'descripcion': forms.TextInput(attrs={'class':'form-control'}),
-            'stock': forms.NumberInput(attrs={'class':'form-control'}),
-            'marca': forms.Select(attrs={'class':'form-control'}),
-            'tipo': forms.Select(attrs={'class':'form-control'}),
+            'proveedor': forms.TextInput(attrs={'class':'form-control'}),
+            'cabecera': forms.TextInput(attrs={'class':'form-control'}),
+            'tipo_archivo': forms.TextInput(attrs={'class':'form-control'}),
+            'delimitador': forms.TextInput(attrs={'class':'form-control'}),
+
         }

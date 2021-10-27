@@ -1,8 +1,7 @@
-ID;Articulo;Precio
-1;Pro plan puppy;700
-2;Pro plan adulto;500
-3;Pro plan gato;800
-4;Pro plan kitten;900
-5;Excelent gato;600
-6;Excelent kitten;750
-7;Cat chow;620
+ASDAFJI-31;Pro plan puppy;7001234;D
+AAAAA-1;Pro plan adulto;500,5910-;D
+123-13AS-3;Pro plan gato;800,1923;D
+HKSL;Pro plan kitten;900,200;D
+123PFKA-3;Excelent gato;600,1203;D
+-123-123;Excelent kitten;750,111;D
+LAKAOP;Cat chow;0;D
