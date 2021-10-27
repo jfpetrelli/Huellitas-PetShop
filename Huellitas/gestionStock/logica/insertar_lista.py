@@ -20,7 +20,11 @@ def insertar_lista(proveedor, lista_proveedor):
 
     #DATOS SOBRE LA LISTA
     proveedor = proveedor
-    cabecera = int(conf_lista_list[0][2])
+    cabecera = 0
+    if conf_lista_list[0][2] == '':
+        cabecera = 0
+    else:
+        cabecera = int(conf_lista_list[0][2])
     tipo_archivo = conf_lista_list[0][3]
     delimitador = conf_lista_list[0][4]
     
@@ -42,7 +46,18 @@ def insertar_lista(proveedor, lista_proveedor):
         lista_datos = df.values.tolist()
         lista_datos.insert(0,df.columns.values.tolist())
         print(lista_datos)
-    
+    else:
+        if delimitador == 'coma':
+            delimitador = ','
+        if delimitador == 'p-coma':
+            delimitador = ';'
+        if delimitador == 'tab':
+            delimitador = '\t'
+        df = pd.read_table(lista_proveedor, sep = delimitador)
+        lista_datos = df.values.tolist()
+        lista_datos.insert(0,df.columns.values.tolist())
+        print(lista_datos) 
+
     lista_datos_acotada = lista_datos[cabecera:]
     print(lista_datos_acotada)
     for arreglo in lista_datos_acotada:
@@ -78,7 +93,7 @@ def insertar_articulo(proveedor, codigo_articulo, descripcion_articulo, precio_a
         data_tuple = (proveedor, codigo_articulo, descripcion_articulo, precio_articulo, 0, 0, date.today(),'','')
         cursor.execute(sqlite_insert_query, data_tuple)
         sqliteConnection.commit()
-        print("Python Variables inserted successfully into gestionStock_configuracion_listas table")
+        print("Python Variables inserted successfully into gestionStock_articulos table")
 
         cursor.close()
 
@@ -92,12 +107,42 @@ def insertar_articulo(proveedor, codigo_articulo, descripcion_articulo, precio_a
 
 
 def actualizar_articulo(proveedor, codigo_articulo, descripcion_articulo, precio_articulo):
-    pass
+    
+    print('Proveedor ' + proveedor)
+       ##INSERT ARTICULO
+    try:
+        sqliteConnection = sqlite3.connect('huellitas.sqlite3')
+        cursor = sqliteConnection.cursor()
+        print("Successfully Connected to SQLite")
+        
+        sqlite_insert_query = """UPDATE gestionStock_articulos set
+                            precio_costo = ?, fecha_actualizacion = ?
+                            WHERE articulo_proveedor = ? AND proveedor_id = ?;"""
+        
+        data_tuple = (precio_articulo, date.today(), codigo_articulo, proveedor)
+        cursor.execute(sqlite_insert_query, data_tuple)
+        sqliteConnection.commit()
+        print("Python Variables update successfully into gestionStock_articulos table")
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to update Python variable into sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print("The SQLite connection is closed")
 
 def convertir_precio(precio, separador_decimal, separador_mil):
     
     if precio == '':
         return 0
+
+    if separador_decimal == 'punto':
+        separador_decimal = '.'
+    if separador_decimal == 'coma':
+        separador_decimal = ','
+    
 
     if type(precio) == int:
        return float(precio)

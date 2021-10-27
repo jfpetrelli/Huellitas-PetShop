@@ -6,7 +6,6 @@ from gestionStock.models import Proveedores, Localidades, Articulos, Configuraci
 from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.logica import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
-
 import os
 import sqlite3
 
@@ -37,7 +36,7 @@ class ProveedoresList(ListView):
     queryset = model.objects.all()
     context_object_name = "proveedores"
     template_name = "proveedores.html"
-    paginate_by = 5
+    paginate_by = 20
 
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
@@ -73,7 +72,7 @@ class ArticulosList(ListView):
     queryset = model.objects.all()
     context_object_name = "articulos"
     template_name = "almacen.html"
-    paginate_by = 5
+    paginate_by = 20
 
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
@@ -171,7 +170,7 @@ class ConfigurarList(ListView):
     queryset = model.objects.all()
     context_object_name = "configuracion_list"
     template_name = "configuracion_list.html"
-    paginate_by = 5
+    paginate_by = 20
 
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
@@ -207,7 +206,7 @@ def importar_lista(request):
         tipo_archivo = '.xls'
     if  tipo_archivo_list[0][0] == 'csv':
         tipo_archivo = '.csv'
-    if  tipo_archivo_list[0][0] == 'texto':
+    if  tipo_archivo_list[0][0] == 'txt':
         tipo_archivo = '.txt'
     if tipo_extension == '.xlsx':
         tipo_extension = '.xls'
