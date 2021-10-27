@@ -76,9 +76,10 @@ class ArticulosList(ListView):
 
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
+        print(query)
         if query:
             object_list = Articulos.objects.filter(
-                Q(descripcion__icontains  = query))
+                Q(descripcion__icontains  = query) | Q(proveedor__razon_social__icontains=query))
         else:
             object_list = Articulos.objects.all()
         return object_list
@@ -116,7 +117,6 @@ def configuracion(request):
     else:
         data = list()
         split_tup = os.path.splitext(request.FILES["file"].name)
-        print(split_tup[1])
 
         if request.POST.get('tipo_archivo') == 'excel' and (split_tup[1] == '.xlsx' or split_tup[1] == '.xls'):
             arch = request.FILES["file"]
@@ -162,7 +162,7 @@ def vincular_configuracion(request):
             return render(request, "no_vinculado.html")
 
         ins.insertar(request.POST)
-
+      
     return render(request, "vinculado_configuracion.html")
 
 class ConfigurarList(ListView):

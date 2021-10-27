@@ -1,8 +1,8 @@
 ID	Articulo	Precio
-1	Pro plan puppy	$700
-2	Pro plan adulto	$500
-3	Pro plan gato	$800
-4	Pro plan kitten	$900
-5	Excelent gato	$600
-6	Excelent kitten	$750
-7	Cat chow	$620
+ASD-1234	Pro plan puppy	$700
+ASD-1235	Pro plan adulto	$500
+ASD-1236	Pro plan gato	$800
+ASD-1237	Pro plan kitten	$900
+ASD-1238	Excelent gato	$600
+ASD-1239	Excelent kitten	$750
+ASD-12310	Cat chow	$620

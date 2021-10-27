@@ -69,7 +69,7 @@ def insertar(datos):
                             VALUES (?, ?, ?, ?);"""
 
         ##CODIGO ARTICULO
-        data_tuple = ('', codigo_articulo,'codigo_articulo', '', int(id))
+        data_tuple = ('', codigo_articulo,'codigo_articulo', int(id))
         cursor.execute(sqlite_insert_query, data_tuple)
         sqliteConnection.commit()
         cursor.close()
@@ -79,7 +79,7 @@ def insertar(datos):
         sqlite_insert_query = """INSERT INTO gestionStock_configuracion_columnas
                           (decimal, columna_archivo, columna_bd, lista_id) 
                             VALUES (?, ?, ?, ?);"""
-        data_tuple = ('', descripcion_articulo,'descripcion_articulo', '', int(id))
+        data_tuple = ('', descripcion_articulo,'descripcion_articulo', int(id))
         cursor.execute(sqlite_insert_query, data_tuple)
         sqliteConnection.commit()
         cursor.close()

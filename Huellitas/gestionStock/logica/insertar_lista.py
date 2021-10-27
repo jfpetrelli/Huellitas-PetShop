@@ -29,11 +29,11 @@ def insertar_lista(proveedor, lista_proveedor):
     delimitador = conf_lista_list[0][4]
     
     #DATOS SOBRE LAS COLUMNAS
-    codigo_articulo_str = conf_columnas_list[0][2]
+    codigo_articulo_str = conf_columnas_list[0][1]
     codigo_articulo = int(codigo_articulo_str[3])
-    descripcion_articulo_str = conf_columnas_list[1][2]
+    descripcion_articulo_str = conf_columnas_list[1][1]
     descripcion_articulo = int(descripcion_articulo_str[3])
-    precio_articulo_str = conf_columnas_list[2][2]
+    precio_articulo_str = conf_columnas_list[2][1]
     precio_articulo = int(precio_articulo_str[3])
     separador_decimal = conf_columnas_list[2][0]
 
@@ -42,7 +42,7 @@ def insertar_lista(proveedor, lista_proveedor):
     print(lista_proveedor)
     lista_datos = list()
     if tipo_archivo == 'excel':
-        df = pd.read_excel(io = lista_proveedor, sheet_name="Sheet1") 
+        df = pd.read_excel(io = lista_proveedor) 
         lista_datos = df.values.tolist()
         lista_datos.insert(0,df.columns.values.tolist())
         print(lista_datos)
@@ -64,6 +64,9 @@ def insertar_lista(proveedor, lista_proveedor):
 
         precio_nuevo = convertir_precio(arreglo[precio_articulo-1], separador_decimal)
 
+        if precio_nuevo == -1:
+            continue
+        
         #EXISTE EL ARTICULO EN LA BD?
         #SI NO EXISTE INSERTA
         # SI EXISTE ACTUALIZA
@@ -137,6 +140,10 @@ def convertir_precio(precio, separador_decimal):
     
     if precio == '':
         return 0
+    
+    if type(precio) != float and type(precio) != int:
+        if not any(chr.isdigit() for chr in precio):
+            return -1
 
     if separador_decimal == 'punto':
         separador_decimal = '.'

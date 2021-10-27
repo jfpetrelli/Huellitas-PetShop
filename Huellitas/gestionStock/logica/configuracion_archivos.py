@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def excel(excel_file):
-    df = pd.read_excel(io = excel_file, sheet_name="Sheet1") 
+    df = pd.read_excel(io = excel_file) 
     lista = df.values.tolist()
     lista.insert(0,df.columns.values.tolist())
     print(lista)
@@ -19,5 +19,5 @@ def txt_del(txt_file, delimitador):
     df = pd.read_table(txt_file, sep = delimitador)
     lista = df.values.tolist()
     lista.insert(0,df.columns.values.tolist())
-    print(lista) 
+    print(df) 
     return lista
