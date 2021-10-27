@@ -7,7 +7,7 @@ from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionList
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.logica import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
 import os
-import sqlite3
+
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -218,8 +218,6 @@ def importar_lista(request):
         return render(request,"importar_lista.html", {'proveedores': proveedores})
 
     return render(request,"error_importar_lista.html")
-
-
 
 
 

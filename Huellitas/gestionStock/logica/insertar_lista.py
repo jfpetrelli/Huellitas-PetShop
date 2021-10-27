@@ -60,6 +60,7 @@ def insertar_lista(proveedor, lista_proveedor):
 
     lista_datos_acotada = lista_datos[cabecera:]
     print(lista_datos_acotada)
+
     for arreglo in lista_datos_acotada:
 
         precio_nuevo = convertir_precio(arreglo[precio_articulo-1], separador_decimal)
