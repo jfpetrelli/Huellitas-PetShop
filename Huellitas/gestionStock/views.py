@@ -5,7 +5,7 @@ from django.db.models import Q
 from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
 from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
 from django.contrib.auth.views import LoginView, LogoutView
-from gestionStock.logica import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
+from gestionStock.controller import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
 import os
 
 
@@ -219,13 +219,6 @@ def importar_lista(request):
 
     return render(request,"error_importar_lista.html")
 
-
-
-
-##LOGIN
-def login(request):
-
-    return render(request,"login.html")
 
 
 

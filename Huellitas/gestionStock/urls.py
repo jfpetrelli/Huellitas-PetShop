@@ -4,7 +4,6 @@ from gestionStock import views
 
 
 urlpatterns = [
-    
     path('home/', login_required(views.Home.as_view()), name="home"),
     #LOGIN-LOGOUT
     path('', views.Login.as_view(), name="login"),

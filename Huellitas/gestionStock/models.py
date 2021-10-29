@@ -90,3 +90,16 @@ class Configuracion_Columnas(models.Model):
    
     class Meta:
         verbose_name_plural = "Configuracion Columnas"
+
+
+
+class Tmp_Articulos(models.Model):
+
+    nuevo = models.BooleanField(default=False, null= True)
+    articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    descripcion = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    precio_costo = models.DecimalField(max_digits=14, decimal_places=2, default = 0, null = True)
+    proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
+
+    class Meta:
+        verbose_name_plural = ""

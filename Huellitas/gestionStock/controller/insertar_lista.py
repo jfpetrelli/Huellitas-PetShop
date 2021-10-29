@@ -61,6 +61,8 @@ def insertar_lista(proveedor, lista_proveedor):
     lista_datos_acotada = lista_datos[cabecera:]
     print(lista_datos_acotada)
 
+    delete_tabla_tmp()
+
     for arreglo in lista_datos_acotada:
 
         precio_nuevo = convertir_precio(arreglo[precio_articulo-1], separador_decimal)
@@ -73,10 +75,63 @@ def insertar_lista(proveedor, lista_proveedor):
         # SI EXISTE ACTUALIZA
         if list(Articulos.objects.filter(proveedor=proveedor, articulo_proveedor = arreglo[codigo_articulo-1])) == []:
             insertar_articulo(proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1],precio_nuevo)
+            insertar_tabla_tmp(True, proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1],precio_nuevo)
         else:
             actualizar_articulo(proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1], precio_nuevo)
+            insertar_tabla_tmp(False, proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1],precio_nuevo)
 
 
+def delete_tabla_tmp():
+
+    try:
+        sqliteConnection = sqlite3.connect('huellitas.sqlite3')
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+
+        # Deleting single record now
+        sql_delete_query = """DELETE from gestionStock_tmp_articulos"""
+        cursor.execute(sql_delete_query)
+        sqliteConnection.commit()
+        sql_update_query = """UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='gestionStock_tmp_articulos';"""
+        cursor.execute(sql_update_query)
+        sqliteConnection.commit()
+        print("Record deleted successfully ")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to delete record from sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print("the sqlite connection is closed")
+
+
+def insertar_tabla_tmp(nuevo, proveedor, art_prov,descripcion,precio_nuevo):
+       
+    
+    try:
+        sqliteConnection = sqlite3.connect('huellitas.sqlite3')
+        cursor = sqliteConnection.cursor()
+        print("Successfully Connected to SQLite")
+        
+        sqlite_insert_query = """INSERT INTO gestionStock_tmp_articulos
+                          (nuevo, proveedor_id, descripcion, articulo_proveedor, precio_costo) 
+                            VALUES (?, ?, ?, ?, ?);"""
+        
+
+        data_tuple = (nuevo, proveedor, descripcion, art_prov, precio_nuevo)
+        cursor.execute(sqlite_insert_query, data_tuple)
+        sqliteConnection.commit()
+        print("Python Variables inserted successfully into gestionStock_articulos table")
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to insert Python variable into sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+            print("The SQLite connection is closed")
 
 
 def insertar_articulo(proveedor, codigo_articulo, descripcion_articulo, precio_articulo):
