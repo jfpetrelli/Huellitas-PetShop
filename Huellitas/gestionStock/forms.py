@@ -1,5 +1,13 @@
 from django import forms
 from gestionStock.models import Proveedores, Articulos, Configuracion_Listas
+from snowpenguin.django.recaptcha2.fields import ReCaptchaField
+from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
+
+class ExampleForm(forms.Form):
+    captcha = ReCaptchaField(widget=ReCaptchaWidget())
+
+
+
 
 class ProveedoresForm(forms.ModelForm):
 

@@ -1,12 +1,15 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.contrib import messages
 from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
 from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.controller import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
 import os
+import requests, json
 
 
 #LOGIN-LOGOUT
@@ -18,6 +21,21 @@ class Login(LoginView):
         if request.user.is_authenticated:
             return redirect('home')
         return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        captcha_token = request.POST.get('g-recaptcha-response')
+        cap_url = 'https://www.google.com/recaptcha/api/siteverify'
+        cap_secret = '6LdC8gAdAAAAACHTMntbVTNP6Fz0lg5IPH6YJqVH'
+        cap_data = {'secret': cap_secret, 'response': captcha_token}
+        cap_server_response = requests.post(url = cap_url, data = cap_data)
+        print(cap_server_response.text)
+        cap_json=json.loads(cap_server_response.text)
+
+        if cap_json['success']==False:
+            messages.error(request,"Invalid Captcha Try Again")
+            return HttpResponseRedirect("/")
+        return redirect('home')
+
 
 class Logout(LogoutView):
 
@@ -219,6 +237,13 @@ def importar_lista(request):
 
     return render(request,"error_importar_lista.html")
 
+
+
+
+##LOGIN
+def login(request):
+
+    return render(request,"login.html")
 
 
 

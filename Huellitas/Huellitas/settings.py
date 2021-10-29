@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'snowpenguin.django.recaptcha2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,3 +130,6 @@ LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_URL = '/'
+
+RECAPTCHA_PRIVATE_KEY = '6LdC8gAdAAAAACHTMntbVTNP6Fz0lg5IPH6YJqVH'
+RECAPTCHA_PUBLIC_KEY = '6LdC8gAdAAAAAA92ym3jTe29le42iQuGf2s-pUbg'
