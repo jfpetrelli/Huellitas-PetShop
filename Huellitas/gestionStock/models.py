@@ -115,8 +115,6 @@ class Tmp_Orden_Compra(models.Model):
     proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
     cantidad = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.reference
 
     class Meta:
         verbose_name_plural = "Pre Orden de Compra "

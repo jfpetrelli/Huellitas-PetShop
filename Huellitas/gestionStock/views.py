@@ -17,7 +17,7 @@ from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import cm
 from django.views.generic import View
-
+import datetime
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -240,6 +240,7 @@ class ordenCompraList(ListView):
     template_name = "ordenCompra.html"
     paginate_by = 20
 
+
     def get_queryset(self): # new
         query = self.request.GET.get('buscar')
         if query:
@@ -251,24 +252,32 @@ class ordenCompraList(ListView):
 
 
 class ordenCompraPDF(View):
+
     def cabecera(self, pdf):
         # Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         pdf.setFont("Helvetica", 16)
         # Dibujamos una cadena en la ubicación X,Y especificada
         pdf.drawString(200, 790, u"ORDEN DE COMPRA")
-        pdf.drawString(200, 770, u"Proveedor")
+        pdf.drawString(200, 770, u"Proveedor "+ self.request.GET.get('buscar'))
+        # Obtengo fecha
+        ahora = datetime.datetime.now()
+        fecha_actual = ahora.strftime("%A, %d de %B %Y %I:%M %p")
+        pdf.drawString(200, 750, u"Fecha: "+ fecha_actual)
 
     def tabla(self, pdf, y):
         # Creamos una tupla de encabezados para neustra tabla
         encabezados = ('Codigo', 'Descripcion', 'Precio', 'Cantidad')
         # Creamos una lista de tuplas que van a contener a las personas
-        renglones = Tmp_Orden_Compra.objects.all()
+        query = self.request.GET.get('buscar')
+        renglones = object_list = Tmp_Orden_Compra.objects.filter(
+                Q(proveedor__razon_social__icontains=query))
         detalles = []
         for renglon in renglones:
             detalles.append((renglon.articulo_proveedor, renglon.descripcion,
                              renglon.precio_costo, renglon.cantidad))
+
         # Establecemos el tamaño de cada una de las columnas de la tabla
-        detalle_orden = Table([encabezados] + detalles, colWidths=[5 * cm, 5 * cm, 5 * cm, 5 * cm])
+        detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 5 * cm, 3 * cm, 2 * cm])
         # Aplicamos estilos a las celdas de la tabla
         detalle_orden.setStyle(TableStyle(
             [
