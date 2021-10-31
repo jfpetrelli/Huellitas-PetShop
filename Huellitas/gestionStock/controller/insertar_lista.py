@@ -149,7 +149,7 @@ def insertar_articulo(proveedor, codigo_articulo, descripcion_articulo, precio_a
         
         
 
-        data_tuple = (proveedor, codigo_articulo, descripcion_articulo, precio_articulo, 0, 0, date.today(),'','')
+        data_tuple = (proveedor, codigo_articulo, descripcion_articulo, precio_articulo, 0, 0, date.today(), '', '')
         cursor.execute(sqlite_insert_query, data_tuple)
         sqliteConnection.commit()
         print("Python Variables inserted successfully into gestionStock_articulos table")

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+
+    .form-control{
+      border: 1px;
+     border-color: gray;
+     border-style: solid;
+
+    }
+    .form-control:focus {
+      border: 2px;
+      border-color: green;
+      border-style: solid;
+
+    }
+    .form-control::placeholder {
+      color: grey;
+
+    }
+    .align-middle {
+      overflow: auto;
+            }
+
+    </style>
+
+<div class="container-lg">
+        <div class="col-sm-9"><h2><b>Ordenes de compra</b></h2></div>
+            <div class="table-title">
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <a>Filtrar</a>
+                        <select name="selector" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                            <option value="">Proveedores</option>
+                            <option value="Todos">Todos</option>
+                            <option value="?buscar=1">1</option>
+                            <option value="?buscar=prov2">prov2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <form method="GET">
+            </form>
+            <div class="form-row">
+
+            <table class="table table-striped mt-1">
+                <thead>
+                    <tr>
+                        <th class="align-middle col-sm-1">ID</th>
+                        <th class="align-middle col-sm-1">Articulo</th>
+                        <th class="align-middle col-sm-1">Art. Proveedor</th>
+                        <th class="align-middle col-sm-1">Costo</th>
+                        <th class="align-middle col-sm-1">Proveedor</th>
+                        <th class="align-middle col-sm-1">Cantidad</th>
+                        <th class="align-middle col-sm-2">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for articulo in ordenCompra %}
+                    <tr>
+                        <td class="align-middle col-sm-1">{{articulo.id}}</td>
+                        <td class="align-middle col-sm-1">{{articulo.descripcion}}</td>
+                        <td class="align-middle col-sm-1">{{articulo.articulo_proveedor}}</td>
+                        <td class="align-middle col-sm-1">{{articulo.precio_costo}}</td>
+                        <td class="align-middle col-sm-1">{{articulo.proveedor}}</td>
+                        <td class="align-middle col-sm-1">{{articulo.cantidad}}</td>
+                        <td class="align-middle col-sm-2">
+                            <a href="{% url 'articulo_update' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-pencil fa-xs" aria-hidden="true"></i></button></a>
+                            <a href="{% url 'articulo_delete' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-trash fa-xs" aria-hidden="true"></i></button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+                <p>
+                    <a> Generar orden de comprar</a>
+                    <select id="dynamic_select">
+                        <option value="" selected>Ordenes de compra</option>
+                        <option value="http://127.0.0.1:8000/ordenCompraPDF/?buscar=1">1</option>
+                        <option value="http://127.0.0.1:8000/ordenCompraPDF/?buscar=Prov2">Prov2</option>
+                    </select>
+
+                    <script>
+                        $(function(){
+                            $('#dynamic_select').bind('change', function () {
+                                var url = $(this).val();
+                                if (url) {
+                                    window.location = url;
+                                }
+                                return false;
+                            });
+                        });
+
+                    </script>
+                </p>
+
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                  <li class="page-item"><a class="page-link text-success" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+                  {% endif %}
+                  {% if page_obj.has_next %}
+                  <li class="page-item"><a class="page-link text-success" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                  {% endif %}
+                </ul>
+
+</div>
+
+{% endblock %}

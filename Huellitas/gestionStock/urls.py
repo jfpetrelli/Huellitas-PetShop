@@ -30,7 +30,12 @@ urlpatterns = [
 
 
     path('resumen/',views.resumen, name="Resumen"),
-    
+
+    # Ordenes de compra
+    path('ordenCompra/',login_required(views.ordenCompraList.as_view()), name="ordenCompraList"),
+    path('ordenCompra/<str:proveedor>',login_required(views.ordenCompraList.as_view()), name="ordenCompraList"),
+    path('ordenCompraPDF/',login_required(views.ordenCompraPDF.as_view()), name="ordenCompraPDF"),
+    path('ordenCompraPDF/<str:proveedor>',login_required(views.ordenCompraPDF.as_view()), name="ordenCompraPDF")
     
     
 ]

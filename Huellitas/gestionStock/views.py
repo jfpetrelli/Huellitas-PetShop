@@ -2,11 +2,21 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.http import FileResponse
 from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
-from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
+from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm, OrdenCompra
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.controller import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
-import os
+import os, io
+#OrdenCompra
+from reportlab.pdfgen import canvas
+from gestionStock.models import Tmp_Orden_Compra
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib.units import cm
+from django.views.generic import View
 
 
 #LOGIN-LOGOUT
@@ -219,12 +229,77 @@ def importar_lista(request):
 
     return render(request,"error_importar_lista.html")
 
-
-
-
-    
-
 def resumen(request):
 
     return render(request,"resumen.html")
 
+class ordenCompraList(ListView):
+    model = Tmp_Orden_Compra
+    queryset = model.objects.all()
+    context_object_name = "ordenCompra"
+    template_name = "ordenCompra.html"
+    paginate_by = 20
+
+    def get_queryset(self): # new
+        query = self.request.GET.get('buscar')
+        if query:
+            object_list = Tmp_Orden_Compra.objects.filter(
+                Q(proveedor__razon_social__icontains=query))
+        else:
+            object_list = Tmp_Orden_Compra.objects.all()
+        return object_list
+
+
+class ordenCompraPDF(View):
+    def cabecera(self, pdf):
+        # Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+        pdf.setFont("Helvetica", 16)
+        # Dibujamos una cadena en la ubicación X,Y especificada
+        pdf.drawString(200, 790, u"ORDEN DE COMPRA")
+        pdf.drawString(200, 770, u"Proveedor")
+
+    def tabla(self, pdf, y):
+        # Creamos una tupla de encabezados para neustra tabla
+        encabezados = ('Codigo', 'Descripcion', 'Precio', 'Cantidad')
+        # Creamos una lista de tuplas que van a contener a las personas
+        renglones = Tmp_Orden_Compra.objects.all()
+        detalles = []
+        for renglon in renglones:
+            detalles.append((renglon.articulo_proveedor, renglon.descripcion,
+                             renglon.precio_costo, renglon.cantidad))
+        # Establecemos el tamaño de cada una de las columnas de la tabla
+        detalle_orden = Table([encabezados] + detalles, colWidths=[5 * cm, 5 * cm, 5 * cm, 5 * cm])
+        # Aplicamos estilos a las celdas de la tabla
+        detalle_orden.setStyle(TableStyle(
+            [
+                # La primera fila(encabezados) va a estar centrada
+                ('ALIGN', (0, 0), (3, 0), 'CENTER'),
+                # Los bordes de todas las celdas serán de color negro y con un grosor de 1
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                # El tamaño de las letras de cada una de las celdas será de 10
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        # Establecemos el tamaño de la hoja que ocupará la tabla
+        detalle_orden.wrapOn(pdf, 800, 600)
+        # Definimos la coordenada donde se dibujará la tabla
+        detalle_orden.drawOn(pdf, 60, y)
+
+    def get(self, request, *args, **kwargs):
+        # Indicamos el tipo de contenido a devolver, en este caso un pdf
+        response = HttpResponse(content_type='application/pdf')
+        # La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        # Canvas nos permite hacer el reporte con coordenadas X y Y
+        pdf = canvas.Canvas(buffer)
+        # Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf)
+        y = 600
+        self.tabla(pdf, y)
+        # Con show page hacemos un corte de página para pasar a la siguiente
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response

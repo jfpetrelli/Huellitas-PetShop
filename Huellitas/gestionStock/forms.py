@@ -1,5 +1,5 @@
 from django import forms
-from gestionStock.models import Proveedores, Articulos, Configuracion_Listas
+from gestionStock.models import Proveedores, Articulos, Configuracion_Listas, Tmp_Orden_Compra
 
 class ProveedoresForm(forms.ModelForm):
 
@@ -107,4 +107,34 @@ class ConfiguracionListForm(forms.ModelForm):
             'tipo_archivo': forms.TextInput(attrs={'class':'form-control'}),
             'delimitador': forms.TextInput(attrs={'class':'form-control'}),
 
+        }
+
+
+class OrdenCompra(forms.ModelForm):
+    class Meta:
+        model = Tmp_Orden_Compra
+
+        fields = [
+            'descripcion',
+            'articulo_proveedor',
+            'cantidad',
+            'precio_costo',
+            'proveedor',
+        ]
+
+        labels = {
+            'descripcion': 'Articulo',
+            'articulo_proveedor': 'Art. Proveedor',
+            'cantidad': 'Cantidad',
+            'precio_costo': 'Costo',
+            'proveedor': 'Proveedor',
+
+        }
+
+        widgets = {
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+            'articulo_proveedor': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control'}),
+            'precio_costo': forms.NumberInput(attrs={'class': 'form-control'}),
+            'proveedor': forms.Select(attrs={'class': 'form-control', 'required': False}),
         }

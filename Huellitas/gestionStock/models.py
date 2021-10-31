@@ -101,5 +101,22 @@ class Tmp_Articulos(models.Model):
     precio_costo = models.DecimalField(max_digits=14, decimal_places=2, default = 0, null = True)
     proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
 
+
+
     class Meta:
         verbose_name_plural = ""
+
+
+class Tmp_Orden_Compra(models.Model):
+
+    articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    descripcion = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    precio_costo = models.DecimalField(max_digits=14, decimal_places=2, default = 0, null = True)
+    proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
+    cantidad = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.reference
+
+    class Meta:
+        verbose_name_plural = "Pre Orden de Compra "
