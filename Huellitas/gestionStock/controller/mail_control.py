@@ -13,7 +13,8 @@ from reportlab.platypus import Table, TableStyle
 def mail(proveedor):
     pdf = generar_pdf(proveedor)
     fecha_actual = datetime.datetime.now().strftime("%A, %d de %B %Y %I:%M %p")
-    email = EmailMessage('Lista actualizada', 'el mensaje','seminarioe2etest@gmail.com', ['seminarioe2etest@gmail.com'])
+    msj = "Se cargo un un nuevo archivo de articulos"
+    email = EmailMessage('Lista actualizada', msj,'seminarioe2etest@gmail.com', ['seminarioe2etest@gmail.com'])
     email.attach(f'ListaCargada-{fecha_actual}.pdf', pdf)
     email.send()
     print('email enviado')

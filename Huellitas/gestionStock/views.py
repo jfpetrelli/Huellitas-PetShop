@@ -297,7 +297,11 @@ class OrdenCompraAdd(CreateView):
             solicitud.articulo_proveedor = articulo.articulo_proveedor
             solicitud.precio_costo = articulo.precio_costo
             solicitud.proveedor = articulo.proveedor
-            solicitud.cantidad = self.request.POST['cantidad']
+            cantidad = self.request.POST['cantidad']
+            if cantidad == 0:
+                solicitud.cantidad = 5
+            else:
+                solicitud.cantidad = self.request.POST['cantidad']
             solicitud.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -354,7 +358,7 @@ class OrdenCompraPDF(View):
             cantidad = cantidad + renglon.cantidad
             total = total + (renglon.cantidad * renglon.precio_costo)
         txt = f"Total de articulos = {cantidad}  total = ${total}"
-        pdf.drawString(20, 670 , txt)
+        pdf.drawString(20, 670, txt)
         # Establecemos el tamaño de cada una de las columnas de la tabla
         detalle_orden = Table([encabezados] + detalles, colWidths=[  5 * cm, 3 * cm, 2 * cm])
         # Aplicamos estilos a las celdas de la tabla
@@ -368,10 +372,10 @@ class OrdenCompraPDF(View):
                 ('FONTSIZE', (0, 0), (-1, -1), 10),
             ]
         ))
-        # Establecemos el tamaño de la hoja que ocupará la tabla
-        detalle_orden.wrapOn(pdf, 800, 600)
-        # Definimos la coordenada donde se dibujará la tabla
-        detalle_orden.drawOn(pdf, 60, y)
+
+        filas = len(detalles)
+        detalle_orden.wrapOn(pdf, 0, 400)
+        detalle_orden.drawOn(pdf, 50, 640 - (18*filas))
         return txt
 
     def get(self, request, *args, **kwargs):
