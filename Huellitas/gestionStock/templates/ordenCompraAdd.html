@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<style>
+
+.form-control{
+  border: 1px;
+ border-color: gray;
+ border-style: solid;
+
+}
+.form-control:focus {
+  border: 2px;
+  border-color: green;
+  border-style: solid;
+   
+}
+.form-control::placeholder {
+  color: grey;
+
+}
+
+</style>
+
+
+<div class="container-lg">
+  <div class="table-title">
+      <div class="row">
+          <div class="col-sm-9"><h2><b>Agregar articulo a pedido</b></h2></div>
+      </div>
+  </div>
+</div>     
+	<form method="POST">
+    {% csrf_token %}
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="descripcion">{{ form2.descripcion.label }}</label>
+            {{ form2.descripcion }}
+          </div>
+        </div>
+        <div class ="form-row">
+          <div class="form-group col-md-6">
+            <label for="cantidad">{{ form.cantidad.label }}</label>
+            {{ form.cantidad }}
+          </div>
+        </div>
+        <div class="class form-row">
+          <div class="class form-group col-md-3">
+            <label for="precio_costo">{{ form2.precio_costo.label }}</label>
+            {{ form2.precio_costo }}
+          </div>
+        </div>
+        <div class="class form-row">
+          <div class="class form-group col-md-6">
+            <label for="proveedor">{{ form2.proveedor.label }}</label>
+            {{ form2.proveedor }}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{% url 'articulo_list' %}" class="btn btn-success">Cancelar</a>
+  </form>
+
+{% endblock %}

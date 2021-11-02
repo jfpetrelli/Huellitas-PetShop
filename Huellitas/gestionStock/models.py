@@ -52,8 +52,6 @@ class Proveedores(models.Model):
     def __str__(self):
         return self.razon_social
 
-
-
 class Articulos(models.Model):
 
     descripcion = models.TextField(max_length = 30)
@@ -68,8 +66,6 @@ class Articulos(models.Model):
 
     class Meta:
         verbose_name_plural = "Articulos"
-
-
 
 class Configuracion_Listas(models.Model):
 
@@ -91,8 +87,6 @@ class Configuracion_Columnas(models.Model):
     class Meta:
         verbose_name_plural = "Configuracion Columnas"
 
-
-
 class Tmp_Articulos(models.Model):
 
     nuevo = models.BooleanField(default=False, null= True)
@@ -101,5 +95,26 @@ class Tmp_Articulos(models.Model):
     precio_costo = models.DecimalField(max_digits=14, decimal_places=2, default = 0, null = True)
     proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
 
+
+
     class Meta:
         verbose_name_plural = ""
+
+class Tmp_Orden_Compra(models.Model):
+
+    articulo_proveedor = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    descripcion = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    precio_costo = models.DecimalField(max_digits=14, decimal_places=2, default = 0, null = True)
+    proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
+    cantidad = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = "Pre Orden de Compra"
+
+class OrdenCompra(models.Model):
+
+    descripcion = models.TextField(max_length = 30, blank = True, default = "", null = True)
+    proveedor = models.ForeignKey(Proveedores, on_delete = models.CASCADE, null = True)
+
+    class Meta:
+        verbose_name_plural = "Orden de Compra"

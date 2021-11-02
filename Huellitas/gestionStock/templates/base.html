@@ -36,7 +36,7 @@
 	              		<a href="{% url 'articulo_list' %}"><span class="fa fa-home mr-3"></span> Artículos</a>
 	          		</li>
 	          		<li class="{% if request.path == '/resumen/' %} active {% endif %}">
-              			<a href="{% url 'Resumen' %}"><span class="fa fa-sticky-note  mr-3"></span> Resumen</a>
+              			<a href="{% url 'ordenCompraList' %}"><span class="fa fa-sticky-note  mr-3"></span> Orden compra</a>
 	          		</li>
 	          		<li class="{% if request.path == '/configuracion/' %} active {% endif %}">
               			<a href="{% url 'art_prov' %}"><span class="fa fa-cogs mr-3"></span> Lista Art-Prov</a>

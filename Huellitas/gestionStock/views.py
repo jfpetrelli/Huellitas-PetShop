@@ -2,12 +2,23 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.http import HttpResponseRedirect, FileResponse
 from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
-from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
+from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm, OrdenCompraForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.controller import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
-import os
-
+import os, io
+#OrdenCompra
+from reportlab.pdfgen import canvas
+from gestionStock.models import Tmp_Orden_Compra
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib.units import cm
+from django.views.generic import View
+import datetime
+from gestionStock.controller.ordenCompra import *
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -110,7 +121,6 @@ def art_prov(request):
 def configuracion(request):
 
     proveedores = Proveedores.objects.all()
-
 
     if "GET" == request.method:
         return render(request,"configuracion.html",{'proveedores': proveedores})
@@ -219,12 +229,185 @@ def importar_lista(request):
 
     return render(request,"error_importar_lista.html")
 
-
-
-
-    
-
 def resumen(request):
 
     return render(request,"resumen.html")
 
+class OrdenCompraList(ListView):
+    model = Tmp_Orden_Compra
+    queryset = model.objects.all()
+    context_object_name = "ordenCompra"
+    template_name = "ordenCompra.html"
+    paginate_by = 20
+
+
+    def get_queryset(self): # new
+        query = self.request.GET.get('buscar')
+        query2 = self.request.GET.get('art')
+        if query:
+            object_list = Tmp_Orden_Compra.objects.filter(
+                Q(proveedor__razon_social__icontains=query))
+        elif query2:
+            object_list = Tmp_Orden_Compra.objects.filter(
+                Q(descripcion=query2))
+        else:
+            object_list = Tmp_Orden_Compra.objects.all()
+        return object_list
+
+class OrdenCompraAdd(CreateView):
+
+    model = Tmp_Orden_Compra
+    second_model = Articulos
+    template_name = 'ordenCompraAdd.html'
+    form_class = OrdenCompraForm
+    second_form_class = ArticulosForm
+    success_url = reverse_lazy('articulo_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk', 0)
+        articulo = Articulos.objects.get(id=pk)
+        oc = Tmp_Orden_Compra.objects.all()
+        if oc.filter(articulo_proveedor=articulo.articulo_proveedor, proveedor=articulo.proveedor).exists():
+            return redirect(f'/ordenCompra/?art={articulo.descripcion}')
+        else:
+            return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(OrdenCompraAdd, self).get_context_data(**kwargs)
+        pk = self.kwargs.get('pk', 0)
+        articulo = self.second_model.objects.get(id=pk)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        if 'form2' not in context:
+            context['form2'] = self.second_form_class(instance=articulo)
+        context['id'] = pk
+        return context
+
+    def post(self, request, *arg, **kwargs):
+
+        self.object = self.get_object
+        pk = self.kwargs.get('pk', 0)
+        articulo = self.second_model.objects.get(id=pk)
+        form = self.form_class(request.POST)
+
+        solicitud = form.save(commit=False)
+        print(type(articulo))
+        if form.is_valid():
+            solicitud.descripcion = articulo.descripcion
+            solicitud.articulo_proveedor = articulo.articulo_proveedor
+            solicitud.precio_costo = articulo.precio_costo
+            solicitud.proveedor = articulo.proveedor
+            solicitud.cantidad = self.request.POST['cantidad']
+            solicitud.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+class OrdenCompraEdit(UpdateView):
+    model = Tmp_Orden_Compra
+    second_model = Tmp_Orden_Compra
+    template_name = 'ordenCompraAdd.html'
+    form_class = OrdenCompraForm
+    second_form_class = Tmp_Orden_Compra
+    success_url = reverse_lazy('ordenCompraList')
+
+    def get_context_data(self, **kwargs):
+        context = super(OrdenCompraEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(self.request.GET)
+        if 'form2' not in context:
+            context['form2'] = context['form']
+        return context
+
+class OrdenCompraDelete(DeleteView):
+    model = Tmp_Orden_Compra
+    template_name = "articulo_confirm_delete.html"
+    success_url = reverse_lazy('ordenCompraList')
+
+class OrdenCompraPDF(View):
+
+    def cabecera(self, pdf, id):
+        # Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+        pdf.setFont("Helvetica", 20)
+        # Dibujamos una cadena en la ubicación X,Y especificada
+        pdf.drawString(120, 800, u"ORDEN DE COMPRA HUELLITAS")
+        pdf.setFont("Helvetica", 13)
+        pdf.drawString(20, 710, u"Proveedor: "+ self.request.GET.get('buscar') + "    N°: "+str(id))
+        # Obtengo fecha
+        ahora = datetime.datetime.now()
+        fecha_actual = ahora.strftime("%A, %d de %B %Y %I:%M %p")
+        pdf.drawString(20, 690, u"Fecha: "+ fecha_actual)
+
+    def tabla(self, pdf, y):
+        # Creamos una tupla de encabezados para neustra tabla
+        encabezados = ('Codigo', 'Descripcion', 'Precio', 'Cantidad')
+        # Creamos una lista de tuplas que van a contener a las personas
+        query = self.request.GET.get('buscar')
+        renglones = object_list = Tmp_Orden_Compra.objects.filter(
+                Q(proveedor__razon_social__icontains=query))
+        detalles = []
+        cantidad = 0
+        total = 0
+        for renglon in renglones:
+            detalles.append((renglon.articulo_proveedor, renglon.descripcion,
+                             renglon.precio_costo, renglon.cantidad))
+            cantidad = cantidad + renglon.cantidad
+            total = total + (renglon.cantidad * renglon.precio_costo)
+        txt = f"Total de articulos = {cantidad}  total = ${total}"
+        pdf.drawString(20, 670 , txt)
+        # Establecemos el tamaño de cada una de las columnas de la tabla
+        detalle_orden = Table([encabezados] + detalles, colWidths=[  5 * cm, 3 * cm, 2 * cm])
+        # Aplicamos estilos a las celdas de la tabla
+        detalle_orden.setStyle(TableStyle(
+            [
+                # La primera fila(encabezados) va a estar centrada
+                ('ALIGN', (0, 0), (3, 0), 'CENTER'),
+                # Los bordes de todas las celdas serán de color negro y con un grosor de 1
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                # El tamaño de las letras de cada una de las celdas será de 10
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        # Establecemos el tamaño de la hoja que ocupará la tabla
+        detalle_orden.wrapOn(pdf, 800, 600)
+        # Definimos la coordenada donde se dibujará la tabla
+        detalle_orden.drawOn(pdf, 60, y)
+        return txt
+
+    def get(self, request, *args, **kwargs):
+        # Indicamos el tipo de contenido a devolver, en este caso un pdf
+
+
+        # array de bytes, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        # Genera orden de Compra
+        proveedor = self.request.GET.get("buscar")
+        fecha_actual = datetime.datetime.now().strftime("%d/%B/%Y")
+        id = persistir_OC(proveedor, fecha_actual)
+
+
+        titulo = f'OC-{proveedor}-N°{id}-{fecha_actual}'
+        pdf = canvas.Canvas(buffer)
+        #Titulo
+        pdf.setTitle(titulo)
+        # Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf, id)
+        y = 600
+        detalle =self.tabla(pdf, y)
+        # Con show page hacemos un corte de página para pasar a la siguiente
+        pdf.showPage()
+        pdf.save()
+        # pdf = buffer.getvalue()
+        # buffer.close()
+        buffer.seek(0)
+        response = FileResponse(buffer, as_attachment=True, filename=f'{titulo}.pdf')
+  #      response.write(pdf)
+
+        #Borra la info descargada
+
+        query = self.request.GET.get('buscar')
+        renglones = object_list = Tmp_Orden_Compra.objects.filter(
+            Q(proveedor__razon_social__icontains=query))
+        renglones.delete()
+
+        return response

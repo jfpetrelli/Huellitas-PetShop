@@ -9,4 +9,4 @@ admin.site.register(Proveedores)
 admin.site.register(Configuracion_Listas)
 admin.site.register(Configuracion_Columnas)
 admin.site.register(Articulos)
-
+admin.site.register(Tmp_Orden_Compra)
