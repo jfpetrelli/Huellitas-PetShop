@@ -82,7 +82,7 @@ def insertar_lista(proveedor, lista_proveedor):
         else:
             actualizar_articulo(proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1], precio_nuevo)
             insertar_tabla_tmp(False, proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1],precio_nuevo)
-    mail()
+    mail(proveedor)
 
 def delete_tabla_tmp():
 
