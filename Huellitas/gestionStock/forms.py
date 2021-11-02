@@ -110,7 +110,7 @@ class ConfiguracionListForm(forms.ModelForm):
         }
 
 
-class OrdenCompra(forms.ModelForm):
+class OrdenCompraForm(forms.ModelForm):
     class Meta:
         model = Tmp_Orden_Compra
 
@@ -123,8 +123,8 @@ class OrdenCompra(forms.ModelForm):
         ]
 
         labels = {
-            'descripcion': 'Articulo',
-            'articulo_proveedor': 'Art. Proveedor',
+            'descripcion': 'Descripcion',
+            'articulo_proveedor': 'Codigo Proveedor',
             'cantidad': 'Cantidad',
             'precio_costo': 'Costo',
             'proveedor': 'Proveedor',

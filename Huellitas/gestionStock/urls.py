@@ -29,13 +29,19 @@ urlpatterns = [
 
 
 
+
     path('resumen/',views.resumen, name="Resumen"),
 
     # Ordenes de compra
-    path('ordenCompra/',login_required(views.ordenCompraList.as_view()), name="ordenCompraList"),
-    path('ordenCompra/<str:proveedor>',login_required(views.ordenCompraList.as_view()), name="ordenCompraList"),
-    path('ordenCompraPDF/',login_required(views.ordenCompraPDF.as_view()), name="ordenCompraPDF"),
-    path('ordenCompraPDF/<str:proveedor>',login_required(views.ordenCompraPDF.as_view()), name="ordenCompraPDF")
-    
+    path('ordenCompra/', login_required(views.OrdenCompraList.as_view()), name="ordenCompraList"),
+    path('ordenCompra/<str:proveedor>', login_required(views.OrdenCompraList.as_view()), name="ordenCompraList"),
+    path('ordenCompra/Add/<int:pk>', login_required(views.OrdenCompraAdd.as_view()), name="ordenCompraAdd"),
+    path('ordenCompra/Edit/<int:pk>', login_required(views.OrdenCompraEdit.as_view()), name="ordenCompraEdit"),
+    path('ordenCompra/Delete/<int:pk>', login_required(views.OrdenCompraDelete.as_view()), name="ordenCompraDelete"),
+    path('ordenCompra/Add/OrdenCompraList/<str:articulo>', login_required(views.OrdenCompraList.as_view()), name="configuracion_list"),
+    # PDF
+    path('ordenCompraPDF/', login_required(views.OrdenCompraPDF.as_view()), name="ordenCompraPDF"),
+    path('ordenCompraPDF/<str:proveedor>', login_required(views.OrdenCompraPDF.as_view()), name="ordenCompraPDF")
+
     
 ]

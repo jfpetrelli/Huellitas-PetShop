@@ -51,7 +51,6 @@
             <table class="table table-striped mt-1">
                 <thead>
                     <tr>
-                        <th class="align-middle col-sm-1">ID</th>
                         <th class="align-middle col-sm-1">Articulo</th>
                         <th class="align-middle col-sm-1">Art. Proveedor</th>
                         <th class="align-middle col-sm-1">Costo</th>
@@ -63,15 +62,14 @@
                 <tbody>
                     {% for articulo in ordenCompra %}
                     <tr>
-                        <td class="align-middle col-sm-1">{{articulo.id}}</td>
                         <td class="align-middle col-sm-1">{{articulo.descripcion}}</td>
                         <td class="align-middle col-sm-1">{{articulo.articulo_proveedor}}</td>
                         <td class="align-middle col-sm-1">{{articulo.precio_costo}}</td>
                         <td class="align-middle col-sm-1">{{articulo.proveedor}}</td>
                         <td class="align-middle col-sm-1">{{articulo.cantidad}}</td>
                         <td class="align-middle col-sm-2">
-                            <a href="{% url 'articulo_update' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-pencil fa-xs" aria-hidden="true"></i></button></a>
-                            <a href="{% url 'articulo_delete' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-trash fa-xs" aria-hidden="true"></i></button></a>
+                            <a href="{% url 'ordenCompraEdit' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-pencil fa-xs" aria-hidden="true"></i></button></a>
+                            <a href="{% url 'ordenCompraDelete' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-trash fa-xs" aria-hidden="true"></i></button></a>
                         </td>
                     </tr>
                     {% endfor %}

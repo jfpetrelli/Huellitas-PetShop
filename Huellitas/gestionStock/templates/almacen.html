@@ -81,6 +81,7 @@
                         <td class="align-middle col-sm-2">
                             <a href="{% url 'articulo_update' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-pencil fa-xs" aria-hidden="true"></i></button></a>
                             <a href="{% url 'articulo_delete' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"><i class="fa fa-trash fa-xs" aria-hidden="true"></i></button></a>
+                            <a href="{% url 'ordenCompraAdd' articulo.id %}"><button type="button" class="btn btn-success add-new btn-xs"> Pedir </button></a>
                         </td>
                     </tr>
                     {% endfor %}

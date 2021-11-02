@@ -117,4 +117,4 @@ class Tmp_Orden_Compra(models.Model):
 
 
     class Meta:
-        verbose_name_plural = "Pre Orden de Compra "
+        verbose_name_plural = "Pre Orden de Compra"
