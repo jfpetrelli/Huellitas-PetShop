@@ -31,6 +31,6 @@ urlpatterns = [
 
     path('resumen/',views.resumen, name="Resumen"),
     
-    
-    
+    ### ELIMINAR ####
+    path('lista/',login_required(views.tem_articulos.as_view()), name="lista"),
 ]

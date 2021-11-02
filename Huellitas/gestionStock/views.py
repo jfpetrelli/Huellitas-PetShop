@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views.generic import ListView, CreateView, TemplateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
-from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
+from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas, Tmp_Articulos
 from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.controller import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
@@ -220,11 +220,16 @@ def importar_lista(request):
     return render(request,"error_importar_lista.html")
 
 
-
-
-    
-
 def resumen(request):
 
     return render(request,"resumen.html")
 
+
+
+### ELIMINAR ####
+class tem_articulos(ListView):
+    model = Tmp_Articulos
+    queryset = model.objects.all()
+    context_object_name = "lista"
+    template_name = "000lista.html"
+    paginate_by = 20

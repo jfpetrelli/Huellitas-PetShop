@@ -1,8 +1,11 @@
 import sqlite3
+
+from gestionStock.controller.mail_control import mail
 from gestionStock.models import Configuracion_Listas, Configuracion_Columnas, Articulos
 import pandas as pd
 from django.core import serializers
 from datetime import date
+
 
 #[(15, 1, '1', 'excel', '')]
 #[('', '', 'col1', 'codigo_articulo'), ('', '', 'col2', 'descripcion_articulo'), 
@@ -79,7 +82,7 @@ def insertar_lista(proveedor, lista_proveedor):
         else:
             actualizar_articulo(proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1], precio_nuevo)
             insertar_tabla_tmp(False, proveedor, arreglo[codigo_articulo-1],arreglo[descripcion_articulo-1],precio_nuevo)
-
+    mail()
 
 def delete_tabla_tmp():
 
