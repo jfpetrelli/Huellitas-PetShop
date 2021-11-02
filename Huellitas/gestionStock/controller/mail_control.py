@@ -1,5 +1,6 @@
 from django.core.mail import EmailMessage
 from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
 import datetime
@@ -25,16 +26,16 @@ def generar_pdf(proveedor):
         # Dibujamos una cadena en la ubicación X,Y especificada
         pdf.drawString(120, 800, u"Informe de nueva lista de articulos cargada")
         pdf.setFont("Helvetica", 13)
-        pdf.drawString(20, 730, u"Proveedor: " + proveedor)
+        pdf.drawString(20, 770, u"Proveedor: " + proveedor)
         # Obtengo fecha
         ahora = datetime.datetime.now()
         fecha_actual = ahora.strftime("%A, %d de %B %Y %I:%M %p")
-        pdf.drawString(20, 710, u"Fecha: " + fecha_actual)
+        pdf.drawString(20, 750, u"Fecha: " + fecha_actual)
 
     def cuerpo(pdf, nuevos, actualizados):
         pdf.setFont("Helvetica", 13)
-        pdf.drawString(20, 690, u"Articulos nuevos: " + str(len(nuevos)))
-        pdf.drawString(20, 670, u"Articulos actualizados: " + str(len(actualizados)))
+        pdf.drawString(20, 730, u"Articulos nuevos: " + str(len(nuevos)))
+        pdf.drawString(20, 710, u"Articulos actualizados: " + str(len(actualizados)))
 
     def tabla(pdf, nuevos, actualizados):
 
@@ -42,6 +43,7 @@ def generar_pdf(proveedor):
         encabezados = ('Codigo', 'Descripcion', 'Precio','Estado')
         # Creamos una lista de tuplas que van a contener informacion
         detalles = []
+
 
         for renglon in nuevos:
             print(renglon)
@@ -59,12 +61,15 @@ def generar_pdf(proveedor):
                 est = 'Actualizado'
             detalles.append((str(renglon[3]), (str(renglon[4])[:30]),
                              str(renglon[5]), est))
+
         # Establecemos el tamaño de cada una de las columnas de la tabla
         detalle_orden = Table([encabezados] + detalles, colWidths=[3 * cm, 8 * cm, 2 * cm, 2 * cm])
         # Establecemos el tamaño de la hoja que ocupará la tabla
-        detalle_orden.wrapOn(pdf, 400, 0)
-        # Definimos la coordenada donde se dibujará la tabla
-        detalle_orden.drawOn(pdf, 50, 0)
+
+        cant = len(detalles)
+        detalle_orden.wrapOn(pdf, 0, 400)
+        detalle_orden.drawOn(pdf, 50, 640 - (18*cant))
+
 
 
      # array de bytes, se utiliza como almacenamiento temporal
@@ -72,13 +77,13 @@ def generar_pdf(proveedor):
        # Canvas nos permite hacer el reporte con coordenadas X y Y
     fecha_actual = datetime.datetime.now().strftime("%d/%B/%Y")
     titulo = f'Lista-{proveedor}-{fecha_actual}'
-    pdf = canvas.Canvas(buffer)
+    pdf = canvas.Canvas(buffer, pagesize=A4)
     # Titulo
     pdf.setTitle(titulo)
     # Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
     cabecera(pdf)
     cuerpo(pdf, nuevos, actualizados)
-    tabla( pdf, nuevos, actualizados)
+    tabla(pdf, nuevos, actualizados)
 #       y = 600
 #       self.tabla(pdf, y)
         # Con show page hacemos un corte de página para pasar a la siguiente
