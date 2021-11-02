@@ -18,6 +18,7 @@ from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import cm
 from django.views.generic import View
 import datetime
+from gestionStock.controller.ordenCompra import *
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -325,13 +326,13 @@ class OrdenCompraDelete(DeleteView):
 
 class OrdenCompraPDF(View):
 
-    def cabecera(self, pdf):
+    def cabecera(self, pdf, id):
         # Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         pdf.setFont("Helvetica", 20)
         # Dibujamos una cadena en la ubicación X,Y especificada
         pdf.drawString(120, 800, u"ORDEN DE COMPRA HUELLITAS")
         pdf.setFont("Helvetica", 13)
-        pdf.drawString(20, 710, u"Proveedor: "+ self.request.GET.get('buscar'))
+        pdf.drawString(20, 710, u"Proveedor: "+ self.request.GET.get('buscar') + "    N°: "+str(id))
         # Obtengo fecha
         ahora = datetime.datetime.now()
         fecha_actual = ahora.strftime("%A, %d de %B %Y %I:%M %p")
@@ -371,24 +372,28 @@ class OrdenCompraPDF(View):
         detalle_orden.wrapOn(pdf, 800, 600)
         # Definimos la coordenada donde se dibujará la tabla
         detalle_orden.drawOn(pdf, 60, y)
+        return txt
 
     def get(self, request, *args, **kwargs):
         # Indicamos el tipo de contenido a devolver, en este caso un pdf
-#      response = HttpResponse(content_type='application/pdf')
+
 
         # array de bytes, se utiliza como almacenamiento temporal
         buffer = BytesIO()
-        # Canvas nos permite hacer el reporte con coordenadas X y Y
+        # Genera orden de Compra
         proveedor = self.request.GET.get("buscar")
         fecha_actual = datetime.datetime.now().strftime("%d/%B/%Y")
-        titulo = f'OC-{proveedor}-{fecha_actual}'
+        id = persistir_OC(proveedor, fecha_actual)
+
+
+        titulo = f'OC-{proveedor}-N°{id}-{fecha_actual}'
         pdf = canvas.Canvas(buffer)
         #Titulo
         pdf.setTitle(titulo)
         # Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
-        self.cabecera(pdf)
+        self.cabecera(pdf, id)
         y = 600
-        self.tabla(pdf, y)
+        detalle =self.tabla(pdf, y)
         # Con show page hacemos un corte de página para pasar a la siguiente
         pdf.showPage()
         pdf.save()

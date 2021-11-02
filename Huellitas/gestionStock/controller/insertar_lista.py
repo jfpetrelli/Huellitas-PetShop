@@ -117,7 +117,6 @@ def insertar_tabla_tmp(nuevo, proveedor, art_prov,descripcion,precio_nuevo):
         sqlite_insert_query = """INSERT INTO gestionStock_tmp_articulos
                           (nuevo, proveedor_id, descripcion, articulo_proveedor, precio_costo) 
                             VALUES (?, ?, ?, ?, ?);"""
-        
 
         data_tuple = (nuevo, proveedor, descripcion, art_prov, precio_nuevo)
         cursor.execute(sqlite_insert_query, data_tuple)
