@@ -298,8 +298,8 @@ class OrdenCompraAdd(CreateView):
             solicitud.precio_costo = articulo.precio_costo
             solicitud.proveedor = articulo.proveedor
             cantidad = self.request.POST['cantidad']
-            if cantidad == 0:
-                solicitud.cantidad = 5
+            if cantidad == '0':
+                solicitud.cantidad = '5'
             else:
                 solicitud.cantidad = self.request.POST['cantidad']
             solicitud.save()
