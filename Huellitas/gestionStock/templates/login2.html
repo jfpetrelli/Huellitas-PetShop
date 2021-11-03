@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+
+    <style>
+        .containerOwnApp {
+            box-shadow: 0 0 27px 0 rgba(84, 84, 84, 0.62);
+            padding-top: 15px;
+        }
+
+        .login-page {
+            padding: 18% 0 0;
+            margin: 0 auto 100px;
+            max-width: 360px;
+            position: relative;
+        }
+
+        .login-form {
+            box-shadow: 0 0 27px 0 rgba(84, 84, 84, 0.62);
+        }
+
+        .login-form-header {
+            padding-top: 16px;
+        }
+
+        .login-from-row {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .login-form-font-header {
+            font-size:30px;
+            font-weight: bold;
+        }
+
+        .login-form-font-header span {
+            color: #007C9B;
+        }
+    </style>
+    <title>Log IN</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+<div class="container">
+    <div class="row text-center login-page">
+        <div class="col-md-12 login-form">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+                {% if form.errors %}
+                    <p>El nombre de usuario y/o contraseña no coinciden. Intentelo denuevo.</p>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-12 login-form-header">
+                        <p class="login-form-font-header">Huellitas<span class="text-success">PetShop</span><p>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12 login-from-row">
+                        <input type="text" name="username" placeholder="Username">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 login-from-row">
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 login-from-row">
+                        <div class="g-recaptcha" data-sitekey=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 login-from-row">
+                        <button type="submit" class="btn btn btn-success">Entrar</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/popper.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/main.js"></script>
+</body>
+</html>
