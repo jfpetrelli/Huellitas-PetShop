@@ -6,7 +6,8 @@ from gestionStock import views
 urlpatterns = [
     path('home/', login_required(views.Home.as_view()), name="home"),
     #LOGIN-LOGOUT
-    path('', views.Login.as_view(), name="login"),
+    path('', views.login_view, name="login"),
+    #path('', views.Login.as_view(), name="login"),
     path('logout/', views.Logout.as_view(), name="logout"),
     #PROVEEDORES
     path('proveedores/', login_required(views.ProveedoresList.as_view()), name="proveedor_list"),
