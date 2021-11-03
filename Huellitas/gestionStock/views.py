@@ -433,3 +433,8 @@ def error_404(request, exception):
 def error_403(request, exception):
 
     return page_not_found(request, template_name='home.html')
+
+
+def error_500(request):
+
+    return page_not_found(request, template_name='home.html')

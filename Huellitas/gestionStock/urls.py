@@ -6,6 +6,7 @@ from django.conf.urls import handler404
 # Errores
 handler404 = 'gestionStock.views.error_404'
 handler403 = 'gestionStock.views.error_403'
+handler500 = 'gestionStock.views.error_500'
 
 urlpatterns = [
     path('home/', login_required(views.Home.as_view()), name="home"),
