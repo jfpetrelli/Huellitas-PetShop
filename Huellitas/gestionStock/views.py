@@ -23,6 +23,7 @@ from gestionStock.controller.ordenCompra import *
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from captcha.fields import ReCaptchaField
+from django.views.defaults import page_not_found
 
 
 
@@ -437,3 +438,21 @@ def login_view(request):
             })
     else:
         return render(request, "login2.html")
+
+
+#ERRORES
+
+
+def error_404(request, exception):
+
+    return page_not_found(request, template_name='home.html')
+
+
+def error_403(request, exception):
+
+    return page_not_found(request, template_name='home.html')
+
+
+def error_500(request):
+
+    return page_not_found(request, template_name='home.html')
