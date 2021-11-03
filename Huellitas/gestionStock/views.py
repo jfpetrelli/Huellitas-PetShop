@@ -343,7 +343,8 @@ class OrdenCompraPDF(View):
         # Dibujamos una cadena en la ubicación X,Y especificada
         pdf.drawString(120, 800, u"ORDEN DE COMPRA HUELLITAS")
         pdf.setFont("Helvetica", 13)
-        pdf.drawString(20, 710, u"Proveedor: "+ self.request.GET.get('buscar') + "    N°: "+str(id))
+        pdf.drawString(20,730, "N°: "+str(id))
+        pdf.drawString(20, 710, u"Proveedor: "+ self.request.GET.get('buscar'))
         # Obtengo fecha
         ahora = datetime.datetime.now()
         fecha_actual = ahora.strftime("%A, %d de %B %Y %I:%M %p")
