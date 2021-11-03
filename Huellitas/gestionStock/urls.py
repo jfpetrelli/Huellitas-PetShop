@@ -1,7 +1,11 @@
 from django.urls import include, path
 from django.contrib.auth.decorators import login_required
 from gestionStock import views
+from django.conf.urls import handler404
 
+# Errores
+handler404 = 'gestionStock.views.error_404'
+handler403 = 'gestionStock.views.error_403'
 
 urlpatterns = [
     path('home/', login_required(views.Home.as_view()), name="home"),
@@ -42,6 +46,6 @@ urlpatterns = [
     # PDF
     path('ordenCompraPDF/', login_required(views.OrdenCompraPDF.as_view()), name="ordenCompraPDF"),
     path('ordenCompraPDF/<str:proveedor>', login_required(views.OrdenCompraPDF.as_view()), name="ordenCompraPDF")
-
-    
 ]
+
+

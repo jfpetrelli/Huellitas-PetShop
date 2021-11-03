@@ -19,6 +19,12 @@ from reportlab.lib.units import cm
 from django.views.generic import View
 import datetime
 from gestionStock.controller.ordenCompra import *
+#Errores
+from django.views.defaults import page_not_found
+
+
+
+
 
 #LOGIN-LOGOUT
 class Login(LoginView):
@@ -415,3 +421,15 @@ class OrdenCompraPDF(View):
         renglones.delete()
 
         return response
+
+#ERRORES
+
+
+def error_404(request, exception):
+
+    return page_not_found(request, template_name='home.html')
+
+
+def error_403(request, exception):
+
+    return page_not_found(request, template_name='home.html')
