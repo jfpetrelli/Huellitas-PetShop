@@ -1,4 +1,3 @@
-from captcha.fields import ReCaptchaField
 from django import forms
 from gestionStock.models import Proveedores, Articulos, Configuracion_Listas, Tmp_Orden_Compra
 
@@ -140,5 +139,3 @@ class OrdenCompraForm(forms.ModelForm):
             'proveedor': forms.Select(attrs={'class': 'form-control', 'required': False}),
         }
 
-class CaptchaForm(forms.Form):
-    captcha = ReCaptchaField()

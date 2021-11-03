@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.http import HttpResponseRedirect, FileResponse
 from gestionStock.models import Proveedores, Localidades, Articulos, Configuracion_Listas, Configuracion_Columnas
-from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm, OrdenCompraForm, CaptchaForm
+from gestionStock.forms import ProveedoresForm, ArticulosForm, ConfiguracionListForm, OrdenCompraForm
 from django.contrib.auth.views import LoginView, LogoutView
 from gestionStock.controller import configuracion_archivos as ca, insertar as ins, insertar_lista as ins_list
 import os, io
@@ -22,7 +22,6 @@ from gestionStock.controller.ordenCompra import *
 #LOGIN2
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
-from captcha.fields import ReCaptchaField
 from django.views.defaults import page_not_found
 
 
@@ -240,6 +239,8 @@ def resumen(request):
 
     return render(request,"resumen.html")
 
+#ORDEN DE COMPRA
+
 class OrdenCompraList(ListView):
     model = Tmp_Orden_Compra
     queryset = model.objects.all()
@@ -423,23 +424,6 @@ class OrdenCompraPDF(View):
         renglones.delete()
 
         return response
-
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        form = CaptchaForm
-        user = authenticate(request, username=username, password=password)
-        if user is not None: #si existe el usuario
-            login(request, user)
-            return HttpResponseRedirect(reverse("home"))
-        else:
-            return render(request, "login2.html", {
-                "mensaje": "Credenciales no validas."
-            })
-    else:
-        return render(request, "login2.html")
-
 
 #ERRORES
 
